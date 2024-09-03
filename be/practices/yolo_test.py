@@ -1,13 +1,12 @@
 from ultralytics import YOLO
 
 # Load a model
-model = YOLO("yolov8n-seg.pt")  # load an official model
-# model = YOLO("path/to/best.pt")  # load a custom model
+model = YOLO("yolov8n.pt")  # pretrained YOLOv8n model
 
-# Predict with the model
-# results = model("https://ultralytics.com/images/bus.jpg")  # predict on an image
-results = model("./images/dclock.png")
+# Run batched inference on a list of images
+results = model(["./images/dnumbers.png", "./images/dclock.png"])  # return a list of Results objects
 
+# Process results list
 for result in results:
     boxes = result.boxes  # Boxes object for bounding box outputs
     print(f"boxes: {boxes}")

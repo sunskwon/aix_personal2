@@ -37,8 +37,9 @@ def detect_shapes(image_path):
     cv2.destroyAllWindows()
 
 # 이미지 경로를 입력하여 함수 호출
-detect_shapes('./images/sqare.png')
+# detect_shapes('./images/sqare.png')
+# detect_shapes('./images/ellipse.png')
+# detect_shapes('./images/circle.png')
+# detect_shapes('./images/dcircle.png')
+# detect_shapes('./images/dellipse.png')
 detect_shapes('./images/ellipse.png')
-detect_shapes('./images/circle.png')
-detect_shapes('./images/dcircle.png')
-detect_shapes('./images/dellipse.png')
