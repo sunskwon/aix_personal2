@@ -1,5 +1,4 @@
 import cv2
-import img_diff
 import numpy as np
 
 def preprocess(image):
@@ -15,24 +14,14 @@ def preprocess(image):
     closing = cv2.morphologyEx(dilation, cv2.MORPH_CLOSE, kernel)
     
     contours, hierachy = cv2.findContours(closing, cv2.RETR_EXTERNAL, 1)
-    img_contour = cv2.drawContours(image, contours, -1, (0, 255, 0), 2)
+    img_contour = cv2.drawContours(image.copy(), contours, -1, (0, 255, 0), 2)
+    
+    crop_imgs = []
     
     for contour in contours:
         
         x, y, w, h = cv2.boundingRect(contour)
         img_crop = image.copy()[y:y + h, x:x + w]
+        crop_imgs.append(img_crop)
         
-        cv2.imshow("img_crop", img_crop)
-        cv2.waitKey(0)
-    
-    return image
-
-def det_num(image):
-    
-    return None
-
-image = cv2.imread('./images/dnumbers.png')
-result = preprocess(image)
-cv2.imshow("image", image)
-cv2.waitKey(0)
-cv2.destroyAllWindows()
+    return crop_imgs

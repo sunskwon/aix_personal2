@@ -37,5 +37,7 @@ model.summary()
 
 model.fit(x_train, y_train, batch_size=100, epochs=10, validation_data=(x_test, y_test))
 
+model.save('my_mnist_model.keras')
+
 result = model.evaluate(x_test, y_test)
 print("최종 예측 성공률(%): ", result[1]*100)
