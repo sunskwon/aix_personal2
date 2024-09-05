@@ -47,6 +47,21 @@ def det_arrow(imageA, imageB):
     angle = cal_angle.detect_arrow_direction(diff)
     
     return angle
+@app.post("/uploadtest")
+async def upload_file_test(files: List[UploadFile] = File(...)):
+    
+    for file in files:
+        
+        image_data = await file.read()
+        image = Image.open(BytesIO(image_data))
+        open_cv_image = np.asarray(image)
+        cv2.imshow("image", open_cv_image)
+        cv2.waitKey(0)
+        cv2.destroyAllWindows()
+            
+    return {
+        "result": "hi",
+    }
 
 @app.post("/uploadfile")
 async def upload_file(files: List[UploadFile] = File(...)):
