@@ -17,8 +17,8 @@ def recog_num(image):
     rects = sorted(rects)
     
     mnist_imgs = []
-    # margin_pixel = 15
-    margin_pixel = 0
+    margin_pixel = 15
+    # margin_pixel = 0
     
     for rect in rects:
         im = blur[rect[1] - margin_pixel:rect[1] + rect[3] + margin_pixel, rect[0] - margin_pixel:rect[0] + rect[2] + margin_pixel]
@@ -44,6 +44,9 @@ def recog_num(image):
         square = border
         
         resized_img = cv2.resize(square, dsize=(28, 28), interpolation=cv2.INTER_AREA)
+        # cv2.imshow('image', resized_img)
+        # cv2.waitKey(0)
+        # cv2.destroyAllWindows()
         mnist_imgs.append(resized_img)
         
     result = 0
@@ -65,3 +68,40 @@ def recog_num(image):
             result += int(res[0])
         
     return result
+
+def det_num(results):
+    
+    numbers = []
+    num_infos = []
+    for result in results:
+        num = recog_num(result['img'])
+        if num >= 1 and num <= 12:
+            numbers.append(str(num))
+            num_infos.append({'num': num, 'rect': result['rect']})
+    
+    temp_nums = set(numbers)
+    numbers = list(temp_nums)
+    numbers = sorted(numbers)
+    
+    y_axis = next((item['rect'][1] for item in num_infos if item['num'] == 12), None)
+    
+    if y_axis == None:
+        return False, numbers, num_infos
+    else:
+        for number in num_infos:
+            if number['rect'][1] < y_axis:
+                return False, numbers, num_infos
+            else:
+                return True, numbers, num_infos
+
+if __name__ == '__main__':
+    
+    import sep_num
+    
+    image = cv2.imread('./images/numbers.png')
+    
+    results = sep_num.preprocess(image)
+    
+    bool, numbers, num_infos = det_num(results)
+    print(bool)
+    print(numbers)

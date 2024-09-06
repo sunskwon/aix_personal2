@@ -1,10 +1,6 @@
 import cv2
 import numpy as np
 
-def cvt_gray(image):
-    
-    return cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-
 def cls_shape(contour):
     
     # 윤곽선의 주변 추출
@@ -41,7 +37,6 @@ def cal_circularity(contour):
     return circularity
 
 def cal_score(scores):
-    print(scores)
     
     sum = 0
     
@@ -52,16 +47,16 @@ def cal_score(scores):
     print(ave)
     
     if ave >= 0.8:
-        return 1
+        return 1.0
     elif ave > 0.3:
         return 0.5
     else:
-        return 0
+        return 0.0
     
 def det_shape(image):
     
     # 이미지 흑백으로 변환
-    gray = cvt_gray(image)
+    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     
     # 가장자리 검출
     edges = cv2.Canny(gray, 50, 150)
@@ -77,8 +72,8 @@ def det_shape(image):
             
             ratio = cal_ratio(contour)
             circularity = cal_circularity(contour)
-            print(f"ratio: {ratio}")
-            print(f"circularity: {circularity}")
+            # print(f"ratio: {ratio}")
+            # print(f"circularity: {circularity}")
             
             if circularity >= 0.8:
                 scores.append(circularity / 0.8)
@@ -98,6 +93,8 @@ def det_shape(image):
     score = cal_score(scores)
     
     return score
-            
-# image = cv2.imread("./images/octa.png")
-# print(det_shape(image))
+
+if __name__ == "__main__":
+
+    image = cv2.imread("./images/step1.png")
+    print(det_shape(image))

@@ -3,37 +3,37 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 
-img_original = cv2.imread('./images/dnumandarrow.png')
-# cv2.imshow("img_original", img_original)
-# cv2.waitKey(0)
+img_original = cv2.imread('./images/example.png')
+cv2.imshow("img_original", img_original)
+cv2.waitKey(0)
 
 img_gray = cv2.cvtColor(img_original, cv2.COLOR_BGR2GRAY)
-# cv2.imshow("img_gray", img_gray)
-# cv2.waitKey(0)
+cv2.imshow("img_gray", img_gray)
+cv2.waitKey(0)
 
 img_gray = cv2.bitwise_not(img_gray)
 _, thresh = cv2.threshold(img_gray, 50, 255, cv2.THRESH_BINARY)
-# cv2.imshow("thresh", thresh)
-# cv2.waitKey(0)
+cv2.imshow("thresh", thresh)
+cv2.waitKey(0)
 
-# adaptive_thresh = cv2.adaptiveThreshold(img_gray, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 11, 5)
-# cv2.imshow("adaptive_thresh", adaptive_thresh)
-# cv2.waitKey(0)
+adaptive_thresh = cv2.adaptiveThreshold(img_gray, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 11, 5)
+cv2.imshow("adaptive_thresh", adaptive_thresh)
+cv2.waitKey(0)
 
 kernel = np.ones((3, 3), np.int8)
 dilation = cv2.dilate(thresh, kernel, iterations=1)
-# cv2.imshow("dilation", dilation)
-# cv2.waitKey(0)
+cv2.imshow("dilation", dilation)
+cv2.waitKey(0)
 
 closing = cv2.morphologyEx(dilation, cv2.MORPH_CLOSE, kernel)
-# cv2.imshow("closing", closing)
-# cv2.waitKey(0)
+cv2.imshow("closing", closing)
+cv2.waitKey(0)
 
 contours, hierachy = cv2.findContours(closing, cv2.RETR_EXTERNAL, 1)
 
 img_contour = cv2.drawContours(img_original, contours, -1, (0, 255, 0), 2)
-# cv2.imshow("img_contour", img_contour)
-# cv2.waitKey(0)
+cv2.imshow("img_contour", img_contour)
+cv2.waitKey(0)
 
 contour_pos = []
 for pos in range(len(contours)):

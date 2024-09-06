@@ -18,9 +18,7 @@ class _PaintState extends State<ClockPaint> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(''),
-      ),
+      backgroundColor: Colors.white,
       body: Center(
         child: DrawingScreen(),
       ),
@@ -43,13 +41,13 @@ class _DrawingScreenState extends State<DrawingScreen> {
   String get _instruction {
     switch (_step) {
       case 1:
-        return '1단계: 시계 테두리를 그려주세요';
+        return '1단계:\n\n시계의 테두리를 그려주세요';
       case 2:
-        return '2단계: 시계 숫자를 그려주세요';
+        return '2단계:\n\n시계의 숫자를 그려주세요';
       case 3:
-        return '3단계: 시침을 그려주세요';
+        return '3단계:\n\n11:10에 해당하는 시침을 그려주세요';
       case 4:
-        return '4단계: 분침을 그려주세요';
+        return '4단계:\n\n11:10에 해당하는 분침을 그려주세요';
       default:
         return '';
     }
@@ -57,81 +55,153 @@ class _DrawingScreenState extends State<DrawingScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        Text(
-          _instruction,
-          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-        ),
-        Container(
-          width: 400,
-          height: 400,
-          decoration: BoxDecoration(
-            border: Border.all(
-              color: Colors.black,
-              width: 2.0,
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          Container(
+            width: 400,
+            padding: EdgeInsets.all(10.0),
+            child: Text(
+              _instruction,
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
           ),
-          child: Stack(
-            children: [
-              RepaintBoundary(
-                key: _repaintBoundaryKey,
-                child: CustomPaint(
-                  painter: DrawingPainter(points),
-                  child: Container(),
-                ),
+          SizedBox(
+            height: 20,
+          ),
+          Container(
+            width: 400,
+            height: 400,
+            decoration: BoxDecoration(
+              border: Border.all(
+                color: Colors.black,
+                width: 2.0,
               ),
-              Positioned.fill(
-                child: GestureDetector(
-                  onPanUpdate: (details) {
-                    RenderBox renderBox = _repaintBoundaryKey.currentContext!
-                        .findRenderObject() as RenderBox;
+            ),
+            child: Stack(
+              children: [
+                RepaintBoundary(
+                  key: _repaintBoundaryKey,
+                  child: CustomPaint(
+                    painter: DrawingPainter(points),
+                    child: Container(),
+                  ),
+                ),
+                Positioned.fill(
+                  child: GestureDetector(
+                    onPanUpdate: (details) {
+                      RenderBox renderBox = _repaintBoundaryKey.currentContext!
+                          .findRenderObject() as RenderBox;
+                      setState(() {
+                        points.add(
+                            renderBox.globalToLocal(details.globalPosition));
+                      });
+                    },
+                    onPanEnd: (details) {
+                      points.add(null);
+                    },
+                  ),
+                ),
+              ],
+            ),
+          ),
+          SizedBox(
+            height: 20,
+          ),
+          Container(
+            width: 400,
+            padding: EdgeInsets.all(10.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                if (_step == 4)
+                  ElevatedButton(
+                    style: ButtonStyle(
+                      backgroundColor:
+                          MaterialStateProperty.all(Colors.blueAccent),
+                      padding: MaterialStateProperty.all(EdgeInsets.symmetric(
+                        horizontal: 10,
+                        vertical: 5,
+                      )),
+                    ),
+                    onPressed: () async {
+                      await _saveToFile();
+                      Navigator.of(context).pushReplacementNamed('/result');
+                    },
+                    child: Text(
+                      '결과 확인',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                if (_step < 4)
+                  ElevatedButton(
+                    style: ButtonStyle(
+                      backgroundColor:
+                          MaterialStateProperty.all(Colors.blueAccent),
+                      padding: MaterialStateProperty.all(EdgeInsets.symmetric(
+                        horizontal: 10,
+                        vertical: 5,
+                      )),
+                    ),
+                    onPressed: () async {
+                      await _saveToFile();
+                      setState(() {
+                        if (_step < 4) _step++;
+                      });
+                    },
+                    child: Text(
+                      '다음',
+                      style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: ui.FontWeight.bold,
+                          color: Colors.white),
+                    ),
+                  ),
+                SizedBox(
+                  width: 20,
+                ),
+                ElevatedButton(
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all(Colors.white),
+                    padding: MaterialStateProperty.all(
+                      EdgeInsets.symmetric(
+                        horizontal: 10,
+                        vertical: 5,
+                      ),
+                    ),
+                    side: MaterialStateProperty.all(
+                      BorderSide(
+                        color: Colors.blueAccent,
+                        width: 2.0,
+                      ),
+                    ),
+                  ),
+                  onPressed: () {
                     setState(() {
-                      points
-                          .add(renderBox.globalToLocal(details.globalPosition));
+                      if (_step != 1) _step = 1;
                     });
+                    points.clear();
                   },
-                  onPanEnd: (details) {
-                    points.add(null);
-                  },
+                  child: Text(
+                    '초기화',
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.blueAccent,
+                    ),
+                  ),
                 ),
-              ),
-            ],
-          ),
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            if (_step == 4)
-              IconButton(
-                icon: Icon(Icons.save),
-                onPressed: () async {
-                  await _saveToFile();
-                  Navigator.of(context).pushNamed('/result');
-                },
-              ),
-            if (_step < 4)
-              IconButton(
-                icon: Icon(Icons.navigate_next),
-                onPressed: () async {
-                  await _saveToFile();
-                  setState(() {
-                    if (_step < 4) _step++;
-                  });
-                },
-              ),
-            IconButton(
-              icon: Icon(Icons.clear),
-              onPressed: () {
-                setState(() {
-                  if (_step != 1) _step = 1;
-                });
-                points.clear();
-              },
+              ],
             ),
-          ],
-        ),
-      ],
+          ),
+        ],
+      ),
     );
   }
 
@@ -187,12 +257,13 @@ class DrawingPainter extends CustomPainter {
     final paint = Paint()
       ..color = Colors.black
       ..strokeCap = StrokeCap.round
-      ..strokeWidth = 5.0;
+      ..strokeWidth = 3.0;
 
     final backgroundPaint = Paint()
-    ..color = Colors.white
-    ..style = PaintingStyle.fill;
-    canvas.drawRect(Rect.fromLTWH(0, 0, size.width, size.height), backgroundPaint);
+      ..color = Colors.white
+      ..style = PaintingStyle.fill;
+    canvas.drawRect(
+        Rect.fromLTWH(0, 0, size.width, size.height), backgroundPaint);
 
     for (int i = 0; i < points.length - 1; i++) {
       if (points[i] != null && points[i + 1] != null) {
