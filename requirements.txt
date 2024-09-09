@@ -5,6 +5,15 @@ pip3 install torch torchvision torchaudio --index-url https://download.pytorch.o
 pip install opencv-python
 pip install tensorflow matplotlib
 
+pip install beautifulsoup4
+pip install lxml
+pip install -U langchain-community
+pip install -U langchain-huggingface
+pip install tf-keras
+pip install faiss-cpu
+
+pip install accelerate
+
 pip install ollama
 pip install pandas
 
@@ -17,3 +26,4 @@ pip install torch transformers datasets pillow
 
 
 frontend module
+flutter pub get

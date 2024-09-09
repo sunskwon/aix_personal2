@@ -96,11 +96,11 @@ def det_num(results):
 
 if __name__ == '__main__':
     
-    import sep_num
+    import modules.separate_number as separate_number
     
     image = cv2.imread('./images/numbers.png')
     
-    results = sep_num.preprocess(image)
+    results = separate_number.preprocess(image)
     
     bool, numbers, num_infos = det_num(results)
     print(bool)

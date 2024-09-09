@@ -3,7 +3,7 @@ import numpy as np
 from fastapi import FastAPI, File, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from io import BytesIO
-from modules import cal_angle, cal_circ, ext_img_diff, recg_num, sep_num
+from modules import calculate_angle, calculate_circularity, extract_img_difference, recognition_number, separate_number
 from PIL import Image
 from typing import List
 
@@ -20,7 +20,7 @@ app.add_middleware(
 def cal_circularity(image):
     
     try:
-        result = cal_circ.det_shape(image)
+        result = calculate_circularity.det_shape(image)
         return result
     except Exception as e:
         print(e)
@@ -29,11 +29,11 @@ def cal_circularity(image):
 def eval_num(imageA, imageB):
     
     try:
-        diff = ext_img_diff.ext_diff(imageA, imageB)
+        diff = extract_img_difference.ext_diff(imageA, imageB)
     
-        sep_imgs = sep_num.preprocess(diff)
+        sep_imgs = separate_number.preprocess(diff)
 
-        bool, numbers, num_infos = recg_num.det_num(sep_imgs)
+        bool, numbers, num_infos = recognition_number.det_num(sep_imgs)
             
         return bool, numbers, num_infos
     except Exception as e:
@@ -43,9 +43,9 @@ def eval_num(imageA, imageB):
 def det_arrow(imageA, imageB):
     
     try:
-        diff = ext_img_diff.ext_diff(imageA, imageB)
+        diff = extract_img_difference.ext_diff(imageA, imageB)
 
-        angle = cal_angle.detect_arrow_direction(diff)
+        angle = calculate_angle.detect_arrow_direction(diff)
     
         return angle
     except Exception as e:

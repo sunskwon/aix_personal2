@@ -41,13 +41,13 @@ class _DrawingScreenState extends State<DrawingScreen> {
   String get _instruction {
     switch (_step) {
       case 1:
-        return '1단계:\n\n시계의 테두리를 그려주세요';
+        return '1단계:\n시계의 테두리를 그려주세요';
       case 2:
-        return '2단계:\n\n시계의 숫자를 그려주세요';
+        return '2단계:\n시계의 숫자를 그려주세요';
       case 3:
-        return '3단계:\n\n11:10에 해당하는 시침을 그려주세요';
+        return '3단계:\n11:10에 해당하는 시침을 그려주세요';
       case 4:
-        return '4단계:\n\n11:10에 해당하는 분침을 그려주세요';
+        return '4단계:\n11:10에 해당하는 분침을 그려주세요';
       default:
         return '';
     }
@@ -65,11 +65,11 @@ class _DrawingScreenState extends State<DrawingScreen> {
             padding: EdgeInsets.all(10.0),
             child: Text(
               _instruction,
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
           ),
           SizedBox(
-            height: 20,
+            height: 10,
           ),
           Container(
             width: 400,
@@ -114,7 +114,7 @@ class _DrawingScreenState extends State<DrawingScreen> {
             width: 400,
             padding: EdgeInsets.all(10.0),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 if (_step == 4)
                   ElevatedButton(
@@ -158,7 +158,7 @@ class _DrawingScreenState extends State<DrawingScreen> {
                     child: Text(
                       '다음',
                       style: TextStyle(
-                          fontSize: 14,
+                          fontSize: 16,
                           fontWeight: ui.FontWeight.bold,
                           color: Colors.white),
                     ),
@@ -191,7 +191,7 @@ class _DrawingScreenState extends State<DrawingScreen> {
                   child: Text(
                     '초기화',
                     style: TextStyle(
-                      fontSize: 14,
+                      fontSize: 16,
                       fontWeight: FontWeight.bold,
                       color: Colors.blueAccent,
                     ),

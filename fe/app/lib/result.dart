@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
@@ -94,38 +95,34 @@ class ResultDisplay extends StatelessWidget {
   Widget build(BuildContext context) {
     double score = 0;
     String _instruction = '';
-    double circularity = result['circularity'];
     double hour_angle = result['hour_angle'];
     double minute_angle = result['minute_angle'];
 
-    score += circularity;
+    double shape_score = result['circularity'];
+    double position_score = result['bool_location'] ? 1 : 0;
+    double number_score = result['numbers'].length > 10
+        ? 1
+        : result['numbers'].length > 7
+            ? 0.5
+            : 0;
+    double hour_score = hour_angle >= 315 && hour_angle <= 345
+        ? 1
+        : hour_angle > 300 && hour_angle < 360
+            ? 0.5
+            : 0;
+    double minute_score = minute_angle >= 45 && minute_angle <= 75
+        ? 1
+        : minute_angle > 30 && minute_angle < 90
+            ? 0.5
+            : 0;
 
-    if (result['bool_location']) {
-      score += 1;
-    }
-
-    if (result['numbers'].length > 10) {
-      score += 1;
-    } else if (result['numbers'].length > 7) {
-      score += 0.5;
-    }
-
-    if (hour_angle >= 315 && hour_angle <= 345) {
-      score += 1;
-    } else if (hour_angle > 300 && hour_angle < 360) {
-      score += 0.5;
-    }
-
-    if (minute_angle >= 45 && minute_angle <= 75) {
-      score += 1;
-    } else if (minute_angle > 30 && minute_angle < 90) {
-      score += 0.5;
-    }
+    score =
+        shape_score + position_score + number_score + hour_score + minute_score;
 
     if (score >= 4) {
-      _instruction = '좋은 결과입니다.\n하지만 안전에 유의해서 운전 하세요.';
+      _instruction = '좋은 결과입니다.\n하지만 안전에 주의해서 운전 하세요.';
     } else if (score >= 3) {
-      _instruction = '아슬아슬하지만 나쁘지 않습니다.\n 주의해서 운전하세요.';
+      _instruction = '아슬아슬하지만 나쁘지 않습니다.\n안전에 주의해서 운전하세요.';
     } else if (score >= 2) {
       _instruction = '피곤하거나 힘든 상황에서는\n운전을 삼가주시기 바랍니다.';
     } else {
@@ -165,19 +162,104 @@ class ResultDisplay extends StatelessWidget {
         Text(
           _instruction,
           textAlign: TextAlign.center,
+          style: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w600,
+          ),
         ),
         SizedBox(
           height: 20,
         ),
-        Text('테두리: ${result['circularity'].toInt() * 20 ?? 0}점'),
-        Text('12의 위치: ${result['bool_location'] ? 20 : 0}점'),
-        Text(
-            '입력된 숫자: ${result['numbers'].length > 10 ? 20 : result['numbers'].length > 7 ? 10 : 0}점'),
-        Text('[${result['numbers'].join(', ') ?? '없음'}]'),
-        Text(
-            '시침의 방향: ${result['hour_angle'] >= 315 && result['hour_angle'] <= 345 ? 20 : result['hour_angle'] > 300 && result['hour_angle'] < 360 ? 10 : 0}점'),
-        Text(
-            '분침의 방향: ${result['minute_angle'] >= 45 && result['minute_angle'] <= 75 ? 20 : result['minute_angle'] > 30 && result['minute_angle'] < 90 ? 10 : 0}점'),
+        Container(
+          padding: EdgeInsets.all(10.0),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            border: Border.all(
+              color: score >= 80
+                  ? Colors.green
+                  : score >= 40
+                      ? Colors.yellow
+                      : Colors.red,
+              width: 2.0,
+            ),
+          ),
+          child: Column(
+            children: [
+              Text(
+                '테두리: ${(shape_score * 20).toInt() ?? 0}점',
+                style: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w400,
+                ),
+              ),
+              SizedBox(
+                height: 5,
+              ),
+              Text(
+                '숫자의 위치: ${(position_score * 20).toInt()}점',
+                style: TextStyle(
+                  fontSize: 14,
+                ),
+              ),
+              SizedBox(
+                height: 5,
+              ),
+              Text(
+                '숫자의 갯수: ${(number_score * 20).toInt()}점',
+                style: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w400,
+                ),
+              ),
+              Text(
+                '${result['numbers'].length > 0 ? '(' + result['numbers'].join(', ') + ')' : ''}',
+                style: TextStyle(
+                  fontSize: 10,
+                ),
+              ),
+              SizedBox(
+                height: 5,
+              ),
+              Text(
+                '시침과 분침: ${((hour_score + minute_score) * 20).toInt()}점',
+                style: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w400,
+                ),
+              ),
+            ],
+          ),
+        ),
+        SizedBox(
+          height: 10,
+        ),
+        ElevatedButton(
+            style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all(Colors.white),
+              padding: MaterialStateProperty.all(
+                EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 5,
+                ),
+              ),
+              side: MaterialStateProperty.all(
+                BorderSide(
+                  color: Colors.blueAccent,
+                  width: 2.0,
+                ),
+              ),
+            ),
+            onPressed: () {
+              Navigator.of(context).pushReplacementNamed('/paint');
+            },
+            child: Text(
+              '다시 그리기',
+              style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+                color: Colors.blueAccent,
+              ),
+            ))
       ],
     );
   }
