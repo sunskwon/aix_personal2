@@ -1,0 +1,52 @@
+stimulus bound response
+: 시간을 제대로 인식하지 못함
+=>	시침과 분침이 적절한 숫자를 가리켜야 함
+
+preservation and pull to stimulus: 시계 바늘을 제대로 그리지 못함?
+=>	???
+
+neglect and spatial deficits: 요소(숫자)가 한쪽 방향에 치우쳐져 있음
+=>	숫자의 좌표를 받아서 분류?
+	이미지를 분할해서 확인?
+
+conceptual deficits: 요소가 없거나 부족함
+=>	숫자가 제대로 읽히지 않지만 갯수 확인은 됨
+
+1. 숫자들이 비슷한 간격으로 위치해있는가?
+2. 숫자 3, 6, 9, 12가 제대로된 위치에 있는가?
+=>	좌표를 받았을 때 12의 y가 가장 작으면 됨
+3. 시계 바늘이 제대로된 위치에 있는가?
+
+ref: https://www.psychdb.com/cognitive-testing/clock-drawing-test
+
+
+
+ref: https://www.cgakit.com/m-1-clock-test
+
+
+All 12 hours are placed in correct numeric order, starting with 12 at the top
+Only the numbers 1∼12 are included (no duplicates, omissions, or foreign marks)
+The numbers are drawn inside the clock circle
+The numbers are spaced equally or nearly equally from each other
+The numbers are spaced equally or nearly equally from the edge of the circle
+One clock hand correctly points to two o’clock
+The other hand correctly points to eleven o’clock
+There are only two clock hands
+ref: https://www.cgakit.com/m-1-clock-test
+
+
+5 = normal, 
+4 = minor visuo-spatial deficits, 
+3 = incorrect representation of the correct time, 
+2 = moderate visuo-spatial deficits, 
+1 = severe visuo-spatial deficits, 
+0 = No reasonable depiction of a clock
+ref: https://www.nature.com/articles/s41598-023-44723-1
+
+
+1. 원의 형태
+2. 12개의 숫자가 중복 없이 모두 있는가? => ocr 성능이 더 좋아져야 함
+3. 12개의 숫자가 '12'를 기준으로 적합한 위치에 있는가? => 숫자의 좌표를 받아서 파악
+=>	12: 가장 낮은 y / 3: 가장 높은 x / 6: 가장 높은 y / 9: 가장 낮은 x
+4. 시침이 하나만 그려져 있고, 정확한 위치를 가리키고 있는가? => 그려진 횟수는 파악 불가
+5. 분침이 하나만 그려져 있고, 정확한 위치를 가리키고 있는가? => 그려진 횟수는 파악 불가
