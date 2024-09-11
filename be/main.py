@@ -1,9 +1,11 @@
 import cv2
 import numpy as np
-from fastapi import FastAPI, File, UploadFile
+from datetime import datetime
+from fastapi import Depends, FastAPI, File, UploadFile, Request
 from fastapi.middleware.cors import CORSMiddleware
 from io import BytesIO
 from modules import calculate_angle, calculate_circularity, extract_img_difference, recognition_number, separate_number
+from modules import answer_rag, crawling_research
 from PIL import Image
 from typing import List
 
@@ -17,11 +19,40 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+research_list = crawling_research.craw_research_list()
+
+def answering(research_list, query):
+    
+    try:
+        answer = answer_rag.answer_rag(research_list, query)
+        return answer
+    except Exception as e:
+        print(e)
+        return ''
+
 def cal_circularity(image):
     
     try:
         result = calculate_circularity.det_shape(image)
         return result
+    except Exception as e:
+        print(e)
+        return 0.0
+
+def crawling(research_list):
+    
+    research_list = crawling_research.craw_research_list()
+    
+    return research_list
+
+def det_arrow(imageA, imageB):
+    
+    try:
+        diff = extract_img_difference.ext_diff(imageA, imageB)
+
+        angle = calculate_angle.detect_arrow_direction(diff)
+    
+        return angle
     except Exception as e:
         print(e)
         return 0.0
@@ -39,19 +70,25 @@ def eval_num(imageA, imageB):
     except Exception as e:
         print(e)
         return False, [], []
-
-def det_arrow(imageA, imageB):
     
-    try:
-        diff = extract_img_difference.ext_diff(imageA, imageB)
+def log_request_time(request: Request):
+    start_time = datetime.now()
+    request.state.start_time = start_time
+    print(f"Request started at: {start_time}")
+    yield
+    end_time = datetime.now()
+    duration = end_time - start_time
+    print(f"Request ended at: {end_time}")
+    print(f"Request duration: {duration}")
 
-        angle = calculate_angle.detect_arrow_direction(diff)
+@app.get("/questiontest")
+async def receive_question_test(query: str):
     
-        return angle
-    except Exception as e:
-        print(e)
-        return 0.0
-
+    return {
+        "result": query,
+        "len": len(research_list),
+    }
+    
 @app.post("/uploadtest")
 async def upload_file_test(files: List[UploadFile] = File(...)):
     
@@ -66,6 +103,15 @@ async def upload_file_test(files: List[UploadFile] = File(...)):
             
     return {
         "result": "hi",
+    }
+
+@app.get("/question", dependencies=[Depends(log_request_time)])
+async def receive_question(query: str):
+    
+    answer = answering(research_list, query)
+    
+    return {
+        "answer": answer
     }
 
 @app.post("/uploadfile")

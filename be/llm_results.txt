@@ -1,0 +1,476 @@
+prompt:
+"주어진 문맥(context)을 바탕으로 질문(question)에 답변하세요.\n질문에 대한 답변이 없는 경우 '해당하는 내용이 없습니다'이라고 답변하세요.\n답변은 한국어로 해야합니다.\nDon't narrate the answer, just answer the question.\ncontext: $context\n\nquestion: $query\n\nHelpful Answer:"
+
+query:
+"기억력에 영향을 미치는 요소는 무엇이 있습니까?"
+
+context crawling from https://www.nia.nih.gov/news/research-highlights (national institute on aging)
+
+
+llama3.1
+
+crawling time duration: 0:01:07.760537
+retrieve time duration: 0:00:04.639449
+add time duration: 0:00:05.101151
+generation started at 2024-09-11 09:09:41.418523
+2024-09-11 09:10:29,186 - 13180 - embedchain.py-embedchain:547 - WARNING: Starting from v0.1.125 the 
+return type of query method will be changed to tuple containing `answer`.
+기억력에 영향을 미치는 요소로는 운동, 뇌의 구조적 변화, 그리고 인지 기능 등이 있습니다.
+generation ended at 2024-09-11 09:10:29.186910
+generation time duration: 0:00:47.768387
+
+crawling time duration: 0:00:15.291246
+retrieve time duration: 0:00:02.958908
+add time duration: 0:00:01.780751
+generation started at 2024-09-11 09:11:54.807188
+2024-09-11 09:12:37,415 - 1852 - embedchain.py-embedchain:547 - WARNING: Starting from v0.1.125 the return type of query method will be changed to tuple containing `answer`.
+기억력에 영향을 미치는 요소로는 운동, 뇌의 구조적 변화, 그리고 인지 기능 등이 있습니다.
+generation ended at 2024-09-11 09:12:37.416236
+generation time duration: 0:00:42.609048
+
+crawling time duration: 0:00:17.739599
+retrieve time duration: 0:00:03.056748
+add time duration: 0:00:02.655417
+generation started at 2024-09-11 09:13:58.307806
+2024-09-11 09:14:41,188 - 9452 - embedchain.py-embedchain:547 - WARNING: Starting from v0.1.125 the return type of query method will be changed to tuple containing `answer`.
+기억력에 영향을 미치는 요소로는 운동, 뇌의 구조적 변화, 그리고 인지 기능 등이 있습니다.
+generation ended at 2024-09-11 09:14:41.188695
+generation time duration: 0:00:42.880889
+
+
+qwen2:7b-instruct
+
+crawling time duration: 0:00:15.881535
+retrieve time duration: 0:00:02.958720
+add time duration: 0:00:02.170067
+generation started at 2024-09-11 09:16:22.757183
+2024-09-11 09:18:46,808 - 13204 - embedchain.py-embedchain:547 - WARNING: Starting from v0.1.125 the 
+return type of query method will be changed to tuple containing `answer`.
+기억력에 영향을 미치는 요소로는 여러 가지가 있습니다. 이 중 몇 가지를 아래에 나열해 보겠습니다.
+
+1. 운동: 연구들은 운동이 기억력을 유지하고 개선하는 데 도움을 주는 것으로 나타났습니다. 특히, 심장 중
+심의 운동은 기억 기능을 보호하는 데 효과적인 것으로 알려져 있습니다.
+
+2. 대뇌 네트워크: '슈퍼에이지어'라는 이름으로 불리는 고령자 중에서 평균 이상의 기억력을 가진 사람들이
+ 자신의 동료들보다 두뇌 네트워크의 특정 부분이 더 강하고, 이는 그들이 중년 사람이나 심지어 청년에게서
+도 메모리 테스트를 잘 수행할 수 있게 하는 것으로 밝혀졌습니다.
+
+3. 대뇌 피질의 얇기: 나이가 들면서 대뇌 피질의 얇기가 일반적입니다. 이는 기억능력에 영향을 미칠 수 있
+습니다.
+
+4. 인지 검사의 민감도와 시간: 인지 테스트가 변화를 충분히 감지하지 못하거나, 메모리 혜택을 볼 수 있는
+ 시간이 6개월 이상이 필요할 수 있다는 것이 밝혀졌습니다.
+
+5. 운동 프로그램: EXERT라는 새로운 클린트라이얼은 중증 인지 장애(MCI)를 가진 사람들을 대상으로, 운동 
+이 알츠하이머 질환에 대한 치료법을 제공하는 데 효과적인지 확인하기 위한 것이며, 이는 실제로 생활에 적
+용할 수 있는 프로그램을 개발하고 의료 제공자에게 처방할 수 있도록 할 것입니다.
+generation ended at 2024-09-11 09:18:46.808130
+generation time duration: 0:02:24.050947
+
+crawling time duration: 0:00:16.786420
+retrieve time duration: 0:00:03.299151
+add time duration: 0:00:02.896218
+generation started at 2024-09-11 09:20:14.460900
+2024-09-11 09:22:39,107 - 7776 - embedchain.py-embedchain:547 - WARNING: Starting from v0.1.125 the return type of query method will be changed to tuple containing `answer`.
+기억력에 영향을 미치는 요소로는 여러 가지가 있습니다. 이 중 몇 가지를 아래에 나열해 보겠습니다.
+
+1. 운동: 연구들은 운동이 기억력을 유지하고 개선하는 데 도움을 주는 것으로 나타났습니다. 특히, 심장 중
+심의 운동은 기억 기능을 보호하는 데 효과적인 것으로 알려져 있습니다.
+
+2. 대뇌 네트워크: '슈퍼에이지어'라는 이름으로 불리는 고령자 중에서 평균 이상의 기억력을 가진 사람들이
+ 자신의 동료들보다 두뇌 네트워크의 특정 부분이 더 강하고, 이는 그들이 중년 사람이나 심지어 청년에게서
+도 메모리 테스트를 잘 수행할 수 있게 하는 것으로 밝혀졌습니다.
+
+3. 대뇌 피질의 얇기: 나이가 들면서 대뇌 피질의 얇기가 일반적입니다. 이는 기억능력에 영향을 미칠 수 있
+습니다.
+
+4. 인지 검사의 민감도와 시간: 인지 테스트가 변화를 충분히 감지하지 못하거나, 메모리 혜택을 볼 수 있는
+ 시간이 6개월 이상이 필요할 수 있다는 것이 밝혀졌습니다.
+
+5. 운동 프로그램: EXERT라는 새로운 클린트라이얼은 중증 인지 장애(MCI)를 가진 사람들을 대상으로, 운동 
+이 알츠하이머 질환에 대한 치료법을 제공하는 데 효과적인지 확인하기 위한 것이며, 이는 실제로 생활에 적
+용할 수 있는 프로그램을 개발하고 의료 제공자에게 처방할 수 있도록 할 것입니다.
+generation ended at 2024-09-11 09:22:39.111475
+generation time duration: 0:02:24.650575
+
+crawling time duration: 0:00:16.928666
+retrieve time duration: 0:00:02.688755
+add time duration: 0:00:02.891189
+generation started at 2024-09-11 09:24:09.445202
+2024-09-11 09:26:32,791 - 9764 - embedchain.py-embedchain:547 - WARNING: Starting from v0.1.125 the return type of query method will be changed to tuple containing `answer`.
+기억력에 영향을 미치는 요소로는 여러 가지가 있습니다. 이 중 몇 가지를 아래에 나열해 보겠습니다.
+
+1. 운동: 연구들은 운동이 기억력을 유지하고 개선하는 데 도움을 주는 것으로 나타났습니다. 특히, 심장 중
+심의 운동은 기억 기능을 보호하는 데 효과적인 것으로 알려져 있습니다.
+
+2. 대뇌 네트워크: '슈퍼에이지어'라는 이름으로 불리는 고령자 중에서 평균 이상의 기억력을 가진 사람들이
+ 자신의 동료들보다 두뇌 네트워크의 특정 부분이 더 강하고, 이는 그들이 중년 사람이나 심지어 청년에게서
+도 메모리 테스트를 잘 수행할 수 있게 하는 것으로 밝혀졌습니다.
+
+3. 대뇌 피질의 얇기: 나이가 들면서 대뇌 피질의 얇기가 일반적입니다. 이는 기억능력에 영향을 미칠 수 있
+습니다.
+
+4. 인지 검사의 민감도와 시간: 인지 테스트가 변화를 충분히 감지하지 못하거나, 메모리 혜택을 볼 수 있는
+ 시간이 6개월 이상이 필요할 수 있다는 것이 밝혀졌습니다.
+
+5. 운동 프로그램: EXERT라는 새로운 클린트라이얼은 중증 인지 장애(MCI)를 가진 사람들을 대상으로, 운동 
+이 알츠하이머 질환에 대한 치료법을 제공하는 데 효과적인지 확인하기 위한 것이며, 이는 실제로 생활에 적
+용할 수 있는 프로그램을 개발하고 의료 제공자에게 처방할 수 있도록 할 것입니다.
+generation ended at 2024-09-11 09:26:32.793533
+generation time duration: 0:02:23.348331
+
+
+qwen2:1.5b-instruct
+
+crawling time duration: 0:00:15.716561
+retrieve time duration: 0:00:03.020035
+add time duration: 0:00:02.854296
+generation started at 2024-09-11 09:28:03.024301
+2024-09-11 09:28:15,700 - 4404 - embedchain.py-embedchain:547 - WARNING: Starting from v0.1.125 the return type of query method will be changed to tuple containing `answer`.
+According to Dr. Baker's research, people need to exercise for longer than 6 months to see memory benefits or that the cognitive tests were not sensitive enough to detect changes. Therefore, the answer 
+is '해당하는 내용이 없습니다' (There is no relevant information).
+generation ended at 2024-09-11 09:28:15.700753
+generation time duration: 0:00:12.676452
+
+crawling time duration: 0:00:16.628244
+retrieve time duration: 0:00:02.919979
+add time duration: 0:00:02.311249
+generation started at 2024-09-11 09:29:23.984626
+2024-09-11 09:29:29,080 - 6208 - embedchain.py-embedchain:547 - WARNING: Starting from v0.1.125 the return type of query method will be changed to tuple containing `answer`.
+According to Dr. Baker's research, people need to exercise for longer than 6 months to see memory benefits or that the cognitive tests were not sensitive enough to detect changes. Therefore, it is important to note that exercising for a longer period of time may be necessary to improve memory.
+generation ended at 2024-09-11 09:29:29.080544
+generation time duration: 0:00:05.095918
+
+crawling time duration: 0:00:15.621408
+retrieve time duration: 0:00:02.821575
+add time duration: 0:00:01.655287
+generation started at 2024-09-11 09:30:41.114183
+2024-09-11 09:30:46,251 - 7160 - embedchain.py-embedchain:547 - WARNING: Starting from v0.1.125 the return type of query method will be changed to tuple containing `answer`.
+According to Dr. Baker's research, people need to exercise for longer than 6 months to see memory benefits or that the cognitive tests were not sensitive enough to detect changes. Therefore, it is important to note that exercising for a longer period of time may be necessary to improve memory.
+generation ended at 2024-09-11 09:30:46.252245
+generation time duration: 0:00:05.138062
+
+
+qwen2:0.5b-instruct
+
+crawling time duration: 0:00:16.045786
+retrieve time duration: 0:00:02.845482
+add time duration: 0:00:02.534702
+generation started at 2024-09-11 09:31:51.393554
+2024-09-11 09:32:08,377 - 5708 - embedchain.py-embedchain:547 - WARNING: Starting from v0.1.125 the return type of query method will be changed to tuple containing `answer`.
+" 기억력에 영향을 미치는 요소는 다음과 같습니다.
+generation ended at 2024-09-11 09:32:08.378849
+generation time duration: 0:00:16.985295
+
+crawling time duration: 0:00:15.771838
+retrieve time duration: 0:00:02.834692
+add time duration: 0:00:02.298293
+generation started at 2024-09-11 09:33:21.705355
+2024-09-11 09:33:26,606 - 8096 - embedchain.py-embedchain:547 - WARNING: Starting from v0.1.125 the return type of query method will be changed to tuple containing `answer`.
+" 기억력에 영향을 미치는 요소는 다음과 같습니다.
+generation ended at 2024-09-11 09:33:26.606143
+generation time duration: 0:00:04.900788
+
+crawling time duration: 0:00:16.490194
+retrieve time duration: 0:00:03.069012
+add time duration: 0:00:02.351260
+generation started at 2024-09-11 09:34:33.183159
+2024-09-11 09:34:37,836 - 5684 - embedchain.py-embedchain:547 - WARNING: Starting from v0.1.125 the return type of query method will be changed to tuple containing `answer`.
+" 기억력에 영향을 미치는 요소는 다음과 같습니다.
+generation ended at 2024-09-11 09:34:37.836124
+generation time duration: 0:00:04.652965
+
+
+gemma:latest
+
+crawling time duration: 0:00:09.003834
+retrieve time duration: 0:00:02.106747
+add time duration: 0:00:02.349116
+generation started at 2024-09-11 09:45:31.142225
+2024-09-11 09:46:40,821 - 9144 - embedchain.py-embedchain:547 - WARNING: Starting from v0.1.125 the return type of query method will be changed to tuple containing `answer`.
+기억력에 영향을 미치는 요소는 기억 과정에 필요한 해당 부위의 뇌 네트워크 상태입니다. 특히, 기억 저장, 주의, 인코딩 및 회상에 중요한 디폴트 모드 네트워크와 사실성 네트워크의 부피 감소는 기억력 저하에 영 
+향을 줄 수 있습니다.
+generation ended at 2024-09-11 09:46:40.822727
+generation time duration: 0:01:09.680502
+
+crawling time duration: 0:00:17.191869
+retrieve time duration: 0:00:03.040163
+add time duration: 0:00:03.006044
+generation started at 2024-09-11 09:48:13.588540
+2024-09-11 09:49:27,750 - 5916 - embedchain.py-embedchain:547 - WARNING: Starting from v0.1.125 the return type of query method will be changed to tuple containing `answer`.
+기억력에 영향을 미치는 요소는 기억 과정에 필요한 해당 부위의 뇌 네트워크 상태입니다. 특히, 기억 저장, 주의, 인코딩 및 회상에 중요한 디폴트 모드 네트워크와 사실성 네트워크의 부피 감소는 기억력 저하에 영 
+향을 줄 수 있습니다.
+generation ended at 2024-09-11 09:49:27.752231
+generation time duration: 0:01:14.163691
+
+crawling time duration: 0:00:17.665034
+retrieve time duration: 0:00:02.924695
+add time duration: 0:00:02.950608
+generation started at 2024-09-11 09:50:52.494100
+2024-09-11 09:52:05,675 - 13164 - embedchain.py-embedchain:547 - WARNING: Starting from v0.1.125 the 
+return type of query method will be changed to tuple containing `answer`.
+기억력에 영향을 미치는 요소는 기억 과정에 필요한 해당 부위의 뇌 네트워크 상태입니다. 특히, 기억 저장, 주의, 인코딩 및 회상에 중요한 디폴트 모드 네트워크와 사실성 네트워크의 부피 감소는 기억력 저하에 영 
+향을 줄 수 있습니다.
+generation ended at 2024-09-11 09:52:05.675899
+generation time duration: 0:01:13.181799
+
+
+gemma2:latest
+
+crawling time duration: 0:00:49.489601
+retrieve time duration: 0:00:04.911005
+add time duration: 0:00:03.902828
+generation started at 2024-09-11 10:13:53.419015
+2024-09-11 10:14:48,220 - 6244 - embedchain.py-embedchain:547 - WARNING: Starting from v0.1.125 the return type of query method will be changed to tuple containing `answer`.
+본문에는 기억력에 영향을 미치는 요소에 대한 구체적인 설명이 없습니다. 
+
+
+
+generation ended at 2024-09-11 10:14:48.220260
+generation time duration: 0:00:54.801245
+
+crawling time duration: 0:00:21.960927
+retrieve time duration: 0:00:02.948798
+add time duration: 0:00:02.847473
+generation started at 2024-09-11 10:16:17.851443
+2024-09-11 10:17:06,530 - 5788 - embedchain.py-embedchain:547 - WARNING: Starting from v0.1.125 the return type of query method will be changed to tuple containing `answer`.
+본문에는 기억력에 영향을 미치는 요소에 대한 구체적인 설명이 없습니다. 
+
+
+
+generation ended at 2024-09-11 10:17:06.531426
+generation time duration: 0:00:48.679983
+
+crawling time duration: 0:00:21.776820
+retrieve time duration: 0:00:02.831718
+add time duration: 0:00:04.240540
+generation started at 2024-09-11 10:18:29.804451
+2024-09-11 10:19:19,654 - 5604 - embedchain.py-embedchain:547 - WARNING: Starting from v0.1.125 the return type of query method will be changed to tuple containing `answer`.
+본문에는 기억력에 영향을 미치는 요소에 대한 구체적인 설명이 없습니다. 
+
+
+
+generation ended at 2024-09-11 10:19:19.655174
+generation time duration: 0:00:49.850723
+
+
+gemma2:2b
+
+crawling time duration: 0:00:16.960000
+retrieve time duration: 0:00:04.989332
+add time duration: 0:00:03.597284
+generation started at 2024-09-11 10:24:29.801582
+2024-09-11 10:24:47,742 - 7864 - embedchain.py-embedchain:547 - WARNING: Starting from v0.1.125 the return type of query method will be changed to tuple containing `answer`.
+기억력에 영향을 미치는 요소는 운동의 장기적인 측면과, 그리고 인지 기능 검사의 민감도 등 여러 가지가 
+있습니다. 특히 EXERT 연구에서 기억력 변화를 더 잘 감지할 수 있는 검사가 사용되었다는 점이 중요합니다.
+
+generation ended at 2024-09-11 10:24:47.744979
+generation time duration: 0:00:17.943397
+
+crawling time duration: 0:00:17.930540
+retrieve time duration: 0:00:02.878236
+add time duration: 0:00:02.562259
+generation started at 2024-09-11 10:26:17.552243
+2024-09-11 10:26:34,272 - 4496 - embedchain.py-embedchain:547 - WARNING: Starting from v0.1.125 the return type of query method will be changed to tuple containing `answer`.
+기억력에 영향을 미치는 요소는 운동의 장기간 지속 여부와 뇌 네트워크 변화 등 여러 가지가 있습니다. 특
+히 EXERT 연구에서, 기억력에 영향을 미치는 요인으로는 운동의 장기간 지속 여부와 뇌 네트워크 변화가 중 
+요하게 언급되었습니다.
+
+generation ended at 2024-09-11 10:26:34.273293
+generation time duration: 0:00:16.721050
+
+crawling time duration: 0:00:18.491437
+retrieve time duration: 0:00:02.792504
+add time duration: 0:00:09.016322
+generation started at 2024-09-11 10:29:34.750176
+2024-09-11 10:29:51,485 - 2936 - embedchain.py-embedchain:547 - WARNING: Starting from v0.1.125 the return type of query method will be changed to tuple containing `answer`.
+기억력에 영향을 미치는 요소는 운동의 장기간 지속 여부와 뇌 네트워크 변화 등 여러 가지가 있습니다. 특
+히 EXERT 연구에서, 기억력에 영향을 미치는 요인으로는 운동의 장기간 지속 여부와 뇌 네트워크 변화가 중 
+요하게 언급되었습니다.
+
+generation ended at 2024-09-11 10:29:51.487771
+generation time duration: 0:00:16.737595
+
+
+query: 
+"흡연이 미치는 영향을 알려주세요."
+crawling time duration: 0:00:15.485080
+retrieve time duration: 0:00:03.070106
+Inserting batches in chromadb: 100%|██████████████████████████████████| 1/1 [00:06<00:00,  6.65s/it]
+add time duration: 0:00:11.309316
+generation started at 2024-09-11 11:35:40.032814
+2024-09-11 11:35:56,733 - 7100 - embedchain.py-embedchain:547 - WARNING: Starting from v0.1.125 the return type of query method will be changed to tuple containing `answer`.
+generation ended at 2024-09-11 11:35:56.733763
+generation time duration: 0:00:16.700949
+질문에 대한 정보를 찾을 수 없습니다.
+
+
+prompt:
+"주어진 문맥(context)을 바탕으로 질문(question)에 답변하세요.\n답변은 한국어로 해야합니다.\nDon't narrate the answer, just answer the question.\ncontext: $context\n\nquestion: $query\n\nHelpful Answer:"
+query: 
+"흡연이 미치는 영향을 알려주세요."
+crawling time duration: 0:00:15.316581
+retrieve time duration: 0:00:02.823059
+add time duration: 0:00:02.535245
+generation started at 2024-09-11 11:37:34.189913
+2024-09-11 11:37:47,202 - 10088 - embedchain.py-embedchain:547 - WARNING: Starting from v0.1.125 the 
+return type of query method will be changed to tuple containing `answer`.
+generation ended at 2024-09-11 11:37:47.202922
+generation time duration: 0:00:13.013009
+The provided text does not mention the effects of smoking.
+
+
+prompt:
+"주어진 문맥(context)을 바탕으로 질문(question)에 답변하세요.\n답변 내용이 없으면 문맥(context)을 기반으로 간단하게 추론해서 답변해주세요.\n 추론 내용도 없으면 '관련된 내용을 찾을 수 없습니다.'라고 답변하세요.\n답변은 한국어로 해야합니다.\nDon't narrate the answer, just answer the question.\ncontext: $context\n\nquestion: $query\n\nHelpful Answer:"
+query: 
+"흡연이 미치는 영향을 알려주세요."
+crawling time duration: 0:00:18.069863
+retrieve time duration: 0:00:02.789469
+add time duration: 0:00:02.377834
+generation started at 2024-09-11 11:40:27.965278
+2024-09-11 11:40:40,900 - 1292 - embedchain.py-embedchain:547 - WARNING: Starting from v0.1.125 the return type of query method will be changed to tuple containing `answer`.
+generation ended at 2024-09-11 11:40:40.900332
+generation time duration: 0:00:12.935054
+관련된 내용을 찾을 수 없습니다.
+
+
+model: 'llama3.1:latest'
+prompt:
+"주어진 문맥(context)을 바탕으로 질문(question)에 답변하세요.\n답변은 한국어로 해야합니다.\nDon't narrate the answer, just answer the question.\ncontext: $context\n\nquestion: $query\n\nHelpful Answer:"
+query: 
+"흡연이 미치는 영향을 알려주세요."
+crawling time duration: 0:00:15.549192
+retrieve time duration: 0:00:02.809574
+add time duration: 0:00:02.564788
+generation started at 2024-09-11 11:42:38.722630
+2024-09-11 11:43:36,240 - 3052 - embedchain.py-embedchain:547 - WARNING: Starting from v0.1.125 the return type of query method will be changed to tuple containing `answer`.
+generation ended at 2024-09-11 11:43:36.240914
+generation time duration: 0:00:57.518284
+연구 결과에 따르면, 5년 후의 사망률을 조사한 결과, 냄새를 못 맡는 사람들은 39%, 냄새 감소가 있는 사람
+들은 19%, 정상적인 냄새 기능이 있는 사람들은 10%만 사망했다. 이 연구 결과는 나이가 많은 사람들의 사망
+ 위험에 대한 냄새 기능의 강력한 지표라는 것을 나타낸다.
+
+
+model: 'qwen2:7b-instruct'
+prompt:
+"주어진 문맥(context)을 바탕으로 질문(question)에 답변하세요.\n답변은 한국어로 해야합니다.\nDon't narrate the answer, just answer the question.\ncontext: $context\n\nquestion: $query\n\nHelpful Answer:"
+query: 
+"흡연이 미치는 영향을 알려주세요."
+crawling time duration: 0:00:15.791103
+retrieve time duration: 0:00:02.858549
+add time duration: 0:00:02.176782
+generation started at 2024-09-11 11:45:10.723206
+2024-09-11 11:46:50,565 - 12632 - embedchain.py-embedchain:547 - WARNING: Starting from v0.1.125 the 
+return type of query method will be changed to tuple containing `answer`.
+generation ended at 2024-09-11 11:46:50.565757
+generation time duration: 0:01:39.842551
+흡연은 건강에 여러 가지 방면에서 부정적인 영향을 미칩니다. 특히, 심장질환, 폐암, 폐기능 감소 등과 같 
+은 심혈관 질환 및 호흡기 질환 위험을 높일 수 있습니다. 또한, 흡연은 대사에 영향을 주어 체중 증가를 유
+발할 수 있으며, 이는 당뇨병 등의 다른 건강 문제를 초래할 수 있습니다. 특히 여성의 경우, 흡연은 임신  
+중 암산소증이나 자궁외임신 등의 위험을 높일 수 있습니다.
+
+또한, 흡연은 심리적인 영향도 미칠 수 있으며, 스트레스를 증가시키고 우울증 및 불안을 유발할 수 있습니 
+다. 또한, 흡연은 청력 감소와 같은 귀의 건강에도 부정적인 영향을 미칠 수 있습니다.
+
+흡연은 이러한 모든 건강 문제를 초래하는 데 기여하며, 이는 개인의 삶의 질을 저하시키고, 심지어는 생명 
+자체에 위협을 가할 수 있습니다.
+
+
+model: 'gemma2:2b'
+prompt:
+"주어진 문맥(context)을 바탕으로 질문(question)에 답변하세요.\n답변은 한국어로 해야합니다.\nDon't narrate the answer, just answer the question.\ncontext: $context\n\nquestion: $query\n\nHelpful Answer:"
+query:
+"흡연이 미치는 영향을 알려주세요."
+
+db 초기화 후 기사 2개 입력:
+crawling time duration: 0:00:15.697528
+retrieve time duration: 0:00:02.961673
+Inserting batches in chromadb: 100%|██████████████████████████████████| 1/1 [00:04<00:00,  4.49s/it]
+Inserting batches in chromadb: 100%|██████████████████████████████████| 1/1 [00:04<00:00,  4.62s/it]
+add time duration: 0:00:10.418340
+generation started at 2024-09-11 12:25:14.166702
+2024-09-11 12:25:19,717 - 11928 - embedchain.py-embedchain:547 - WARNING: Starting from v0.1.125 the 
+return type of query method will be changed to tuple containing `answer`.
+generation ended at 2024-09-11 12:25:19.717306
+generation time duration: 0:00:05.550604
+page_content='Smoking in middle age is associated with increased rate of cognitive decline in men' metadata={'source': 'https://www.nia.nih.gov/news/smoking-middle-age-associated-increased-rate-cognitive-decline-men'}
+page_content='Loss of the sense of smell may predict mortality risk among older people' metadata={'source': 'https://www.nia.nih.gov/news/loss-sense-smell-may-predict-mortality-risk-among-older-people'}The provided text does not mention any information about smoking's impact on cognitive decline in women.  It only mentions a study by Sabia et al., which investigated the relationship between smoking and cognitive decline in early old age, but it doesn't provide details about that study's findings.
+
+db 초기화 후 기사 1개 입력:
+crawling time duration: 0:00:15.514204
+retrieve time duration: 0:00:03.015242
+Inserting batches in chromadb: 100%|██████████████████████████████████| 1/1 [00:04<00:00,  4.64s/it]
+add time duration: 0:00:04.969994
+generation started at 2024-09-11 12:28:42.687661
+2024-09-11 12:28:44,801 - 9796 - local_persistent_hnsw.py-local_persistent_hnsw:347 - WARNING: Number of requested results 3 is greater than number of elements in index 2, updating n_results = 2        
+2024-09-11 12:28:49,172 - 9796 - embedchain.py-embedchain:547 - WARNING: Starting from v0.1.125 the return type of query method will be changed to tuple containing `answer`.
+generation ended at 2024-09-11 12:28:49.172401
+generation time duration: 0:00:06.484740
+page_content='Smoking in middle age is associated with increased rate of cognitive decline in men' metadata={'source': 'https://www.nia.nih.gov/news/smoking-middle-age-associated-increased-rate-cognitive-decline-men'}
+흡연은 남성의 중년기에서 인지 기능 저하를 증가시키는 것으로 나타났습니다.  남성의 흡연은 인지 기능 저
+하에 더 큰 영향을 미치는 것으로 나타났으며, 특히 흡연이 시작된 시점과 연관성이 있는 것으로 나타났습니
+다.
+
+
+model: 'gemma2:2b'
+prompt:
+"주어진 문맥(context)을 바탕으로 질문(question)에 답변하세요.\n답변은 한국어로 해야합니다.\nDon't narrate the answer, just answer the question.\ncontext: $context\n\nquestion: $query\n\nHelpful Answer:"
+query:
+"기억력 발달에 도움이 되는 행동은?."
+crawling time duration: 0:00:15.340576
+retrieve time duration: 0:00:02.879242
+Inserting batches in chromadb: 100%|██████████████████████████████████| 1/1 [00:06<00:00,  6.60s/it]
+add time duration: 0:00:07.725411
+generation started at 2024-09-11 12:37:58.211997
+2024-09-11 12:38:03,560 - 12172 - embedchain.py-embedchain:547 - WARNING: Starting from v0.1.125 the 
+return type of query method will be changed to tuple containing `answer`.
+generation ended at 2024-09-11 12:38:03.560870
+generation time duration: 0:00:05.348873
+page_content='Brain stimulation can affect memory in older adults' metadata={'source': 'https://www.nia.nih.gov/news/brain-stimulation-can-affect-memory-older-adults'}
+Parietal region near the back of the brain의 저주파 전기 자극.
+
+
+model: 'llama3.1:latest'
+prompt:
+"주어진 문맥(context)을 바탕으로 질문(question)에 답변하세요.\n답변은 한국어로 해야합니다.\nDon't narrate the answer, just answer the question.\ncontext: $context\n\nquestion: $query\n\nHelpful Answer:"
+query:
+"기억력 발달에 도움이 되는 행동은?."
+crawling time duration: 0:00:15.615743
+retrieve time duration: 0:00:03.086563
+Inserting batches in chromadb: 100%|██████████████████████████████████| 1/1 [00:06<00:00,  6.71s/it]
+add time duration: 0:00:07.040916
+generation started at 2024-09-11 12:39:41.826088
+2024-09-11 12:40:37,144 - 12764 - embedchain.py-embedchain:547 - WARNING: Starting from v0.1.125 the 
+return type of query method will be changed to tuple containing `answer`.
+generation ended at 2024-09-11 12:40:37.145793
+generation time duration: 0:00:55.319705
+page_content='Brain stimulation can affect memory in older adults' metadata={'source': 'https://www.nia.nih.gov/news/brain-stimulation-can-affect-memory-older-adults'}
+기억력 발달에 도움이 되는 행동으로는, 특정한 신경파장의 활동을 조절하는 비침습적 방법을 사용하여, 특 
+히 낮은 주파수刺激을 이용하여 작업 기억력을 향상시키고, 높은 주파수刺激을 이용하여 장기 기억력을 향상
+시키는 것이다.
+
+
+model: 'qwen2:1.5b-instruct'
+prompt:
+"주어진 문맥(context)을 바탕으로 질문(question)에 답변하세요.\n답변은 한국어로 해야합니다.\nDon't narrate the answer, just answer the question.\ncontext: $context\n\nquestion: $query\n\nHelpful Answer:"
+query:
+"기억력 발달에 도움이 되는 행동은?."
+crawling time duration: 0:00:15.623668
+retrieve time duration: 0:00:03.016171
+Inserting batches in chromadb: 100%|██████████████████████████████████| 1/1 [00:08<00:00,  8.46s/it]
+add time duration: 0:00:09.041212
+generation started at 2024-09-11 12:42:13.334601
+2024-09-11 12:42:26,314 - 13624 - embedchain.py-embedchain:547 - WARNING: Starting from v0.1.125 the 
+return type of query method will be changed to tuple containing `answer`.
+generation ended at 2024-09-11 12:42:26.315072
+generation time duration: 0:00:12.980471
+page_content='Brain stimulation can affect memory in older adults' metadata={'source': 'https://www.nia.nih.gov/news/brain-stimulation-can-affect-memory-older-adults'}
+Brain stimulation (특히 뒤쪽 머리 부분에 적용되는 전극적 휘발적电流 쿨링)을 사용하여 노화가 발생한 사
+람들의 기억력을 개선하는 방법을 연구하고 있습니다. 이 연구는 150명의 참가자, 연령이 65세에서 88세까지
+의 사람들에게 진행되었습니다. 참가자는 두 가지 또는 더 많은 일주일 동안 뒤쪽 머리 부분에 적용되는 전 
+극적 휘발적电流 쿨링을 받거나 무작위적인 치료를 받았습니다. 각 세션에서, 참가자들은 특정 뇌 구역에 적
+용된 전극적 휘발적电流 쿨링을 받았습니다. 첫 번째 및 마지막 세션마다 두 가지 30초의 전극적 휘발적电流
+ 쿨링을 생성하여 불쾌감과 같은 효과를 생성했습니다. 기억력을 평가하는 데 사용된 방법은 5개의 목록에  
+대해 읽고, 목록의 각 부분에서 가장 최근 들은 단어를 기억하고, 목록의 시작 부분에서 기억해야 하는 단어
+를 기억하는 것입니다. 이 연구는 노화가 발생한 사람들의 기억력을 개선하는 데 도움이 될 수 있는 행동을 
+제시합니다.
