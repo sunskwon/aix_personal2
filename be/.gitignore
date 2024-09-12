@@ -1,7 +1,9 @@
 # Custom
 *.pt
 *.keras
+*.h5
 db/
+saved_model/
 *.yaml
 
 # Created by https://www.toptal.com/developers/gitignore/api/windows,python,visualstudiocode

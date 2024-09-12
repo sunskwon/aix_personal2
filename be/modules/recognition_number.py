@@ -1,6 +1,10 @@
 import cv2
 import numpy as np
+# import os
 import tensorflow as tf
+
+# script_dir = os.path.dirname(__file__)
+# model_path = os.path.join(script_dir, '..', 'my_mnist_model.keras')
 
 model = tf.keras.models.load_model('my_mnist_model.keras')
 
@@ -96,7 +100,7 @@ def det_num(results):
 
 if __name__ == '__main__':
     
-    import modules.separate_number as separate_number
+    import separate_number
     
     image = cv2.imread('./images/numbers.png')
     

@@ -65,7 +65,7 @@ class WelcomePage extends StatelessWidget {
                       color: Colors.white)),
                 ),
                 onPressed: () {
-                  Navigator.of(context).pushReplacementNamed('/paint');
+                  Navigator.of(context).pushReplacementNamed('/select');
                 },
                 child: Text(
                   '시작하기',

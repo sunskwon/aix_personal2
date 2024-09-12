@@ -19,6 +19,9 @@ class _PaintState extends State<ClockPaint> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+      ),
       body: Center(
         child: DrawingScreen(),
       ),

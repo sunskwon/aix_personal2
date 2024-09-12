@@ -56,7 +56,7 @@ def craw_research_list():
     research_list = []
     
     while not is_nia_empty:
-        # print(f"nia_page: {nia_page}")
+        print(f"nia_page: {nia_page}")
         temp_list = craw_research_from_nia(nia_page)
         
         if len(temp_list) > 0:
@@ -66,7 +66,7 @@ def craw_research_list():
             is_nia_empty = True
     
     while not is_nhis_empty:
-        # print(f"nhis_page: {nhis_page}")
+        print(f"nhis_page: {nhis_page}")
         temp_list = craw_research_from_nhis(nhis_page)
         
         if len(temp_list) > 0:

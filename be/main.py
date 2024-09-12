@@ -1,11 +1,13 @@
 import cv2
 import numpy as np
+import os
 from datetime import datetime
 from fastapi import Depends, FastAPI, File, UploadFile, Request
 from fastapi.middleware.cors import CORSMiddleware
 from io import BytesIO
-from modules import calculate_angle, calculate_circularity, extract_img_difference, recognition_number, separate_number
+from modules import calculate_angle, calculate_circularity, extract_img_difference, separate_number
 from modules import answer_rag, crawling_research
+from modules import recognition_number
 from PIL import Image
 from typing import List
 
@@ -19,12 +21,10 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-research_list = crawling_research.craw_research_list()
-
-def answering(research_list, query):
+def answering(query):
     
     try:
-        answer = answer_rag.answer_rag(research_list, query)
+        answer = answer_rag.answer_rag(query)
         return answer
     except Exception as e:
         print(e)
@@ -38,12 +38,6 @@ def cal_circularity(image):
     except Exception as e:
         print(e)
         return 0.0
-
-def crawling(research_list):
-    
-    research_list = crawling_research.craw_research_list()
-    
-    return research_list
 
 def det_arrow(imageA, imageB):
     
@@ -86,7 +80,6 @@ async def receive_question_test(query: str):
     
     return {
         "result": query,
-        "len": len(research_list),
     }
     
 @app.post("/uploadtest")
@@ -108,7 +101,7 @@ async def upload_file_test(files: List[UploadFile] = File(...)):
 @app.get("/question", dependencies=[Depends(log_request_time)])
 async def receive_question(query: str):
     
-    answer = answering(research_list, query)
+    answer = answering(query)
     
     return {
         "answer": answer
@@ -159,3 +152,6 @@ if __name__ == '__main__':
     print(f"numbers: {numbers}")
     print(f"hour_angle: {hour_angle}")
     print(f"minute_angle: {minute_angle}")
+    
+    result = answering('이석증의 증상은?')
+    print(result)

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'paint.dart';
 import 'result.dart';
+import 'select.dart';
+import 'talk.dart';
 import 'welcome.dart';
 
 void main() {
@@ -18,8 +20,10 @@ class MyApp extends StatelessWidget {
       initialRoute: '/welcome',
       routes: {
         '/welcome': (context) => WelcomePage(),
+        '/select': (context) => SelectPage(),
         '/paint': (context) => ClockPaint(),
         '/result': (context) => ResultPage(),
+        '/talk': (context) => TalkPage(),
       },
     );
   }
