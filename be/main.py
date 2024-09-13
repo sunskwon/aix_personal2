@@ -137,21 +137,21 @@ if __name__ == '__main__':
 
     import cv2
 
-    imageA = cv2.imread('./images/step1.png')
-    imageB = cv2.imread('./images/step2.png')
-    imageC = cv2.imread('./images/step3.png')
-    imageD = cv2.imread('./images/step4.png')
+    # imageA = cv2.imread('./images/step1.png')
+    # imageB = cv2.imread('./images/step2.png')
+    # imageC = cv2.imread('./images/step3.png')
+    # imageD = cv2.imread('./images/step4.png')
 
-    circularity = cal_circularity(imageA)
-    bool, numbers, num_infos = eval_num(imageA, imageB)
-    hour_angle = det_arrow(imageB, imageC)
-    minute_angle = det_arrow(imageC, imageD)
+    # circularity = cal_circularity(imageA)
+    # bool, numbers, num_infos = eval_num(imageA, imageB)
+    # hour_angle = det_arrow(imageB, imageC)
+    # minute_angle = det_arrow(imageC, imageD)
     
-    print(f"circularity: {circularity}")
-    print(f"bool: {bool}")
-    print(f"numbers: {numbers}")
-    print(f"hour_angle: {hour_angle}")
-    print(f"minute_angle: {minute_angle}")
+    # print(f"circularity: {circularity}")
+    # print(f"bool: {bool}")
+    # print(f"numbers: {numbers}")
+    # print(f"hour_angle: {hour_angle}")
+    # print(f"minute_angle: {minute_angle}")
     
-    result = answering('이석증의 증상은?')
+    result = answering('벌레 물림 증상은?')
     print(result)
