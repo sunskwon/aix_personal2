@@ -54,7 +54,7 @@ def cal_score(scores):
         return 0.0
     
 def det_shape(image):
-    
+
     # 이미지 흑백으로 변환
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     

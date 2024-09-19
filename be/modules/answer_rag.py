@@ -1,7 +1,7 @@
 import os
 import torch
 from datetime import datetime
-from embedchain import App
+# from embedchain import App
 from langchain_community.chat_models import ChatOllama
 from langchain_community.vectorstores import FAISS
 from langchain_core.output_parsers import StrOutputParser

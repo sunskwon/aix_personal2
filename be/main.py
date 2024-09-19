@@ -5,7 +5,7 @@ from datetime import datetime
 from fastapi import Depends, FastAPI, File, UploadFile, Request
 from fastapi.middleware.cors import CORSMiddleware
 from io import BytesIO
-from modules import calculate_angle, calculate_circularity, extract_img_difference, separate_number
+from modules import calculate_angle, calculate_circularity, create_ocr_model, extract_img_difference, separate_number
 from modules import answer_rag, crawling_research
 from modules import recognition_number
 from PIL import Image
@@ -20,6 +20,9 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+if not os.path.isfile("my_mnist_model.keras"):
+    create_ocr_model.create_ocr_model()
 
 def answering(query):
     
@@ -137,21 +140,21 @@ if __name__ == '__main__':
 
     import cv2
 
-    # imageA = cv2.imread('./images/step1.png')
-    # imageB = cv2.imread('./images/step2.png')
-    # imageC = cv2.imread('./images/step3.png')
-    # imageD = cv2.imread('./images/step4.png')
+    imageA = cv2.imread('./images/step1.png')
+    imageB = cv2.imread('./images/step2.png')
+    imageC = cv2.imread('./images/step3.png')
+    imageD = cv2.imread('./images/step4.png')
 
-    # circularity = cal_circularity(imageA)
-    # bool, numbers, num_infos = eval_num(imageA, imageB)
-    # hour_angle = det_arrow(imageB, imageC)
-    # minute_angle = det_arrow(imageC, imageD)
+    circularity = cal_circularity(imageA)
+    bool, numbers, num_infos = eval_num(imageA, imageB)
+    hour_angle = det_arrow(imageB, imageC)
+    minute_angle = det_arrow(imageC, imageD)
     
-    # print(f"circularity: {circularity}")
-    # print(f"bool: {bool}")
-    # print(f"numbers: {numbers}")
-    # print(f"hour_angle: {hour_angle}")
-    # print(f"minute_angle: {minute_angle}")
+    print(f"circularity: {circularity}")
+    print(f"bool: {bool}")
+    print(f"numbers: {numbers}")
+    print(f"hour_angle: {hour_angle}")
+    print(f"minute_angle: {minute_angle}")
     
-    result = answering('벌레 물림 증상은?')
-    print(result)
+    # result = answering('벌레 물림 증상은?')
+    # print(result)
