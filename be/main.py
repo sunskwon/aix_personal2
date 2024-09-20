@@ -27,8 +27,18 @@ if not os.path.isfile("my_mnist_model.keras"):
 def answering(query):
     
     try:
+        last_mark = query[len(query) - 1:]
+
+        if last_mark != '?':
+            query += '?'
+        
         answer = answer_rag.answer_rag(query)
-        return answer
+        answer = " ".join(answer.split())
+
+        if any('\uAC00' <= char <= '\uD7A3' for char in answer):
+            return answer
+        else:
+            return '{query}에 대한 정보를 찾을수 없습니다.'
     except Exception as e:
         print(e)
         return ''
@@ -138,23 +148,23 @@ async def upload_file(files: List[UploadFile] = File(...)):
 
 if __name__ == '__main__':
 
-    import cv2
+    # import cv2
 
-    imageA = cv2.imread('./images/step1.png')
-    imageB = cv2.imread('./images/step2.png')
-    imageC = cv2.imread('./images/step3.png')
-    imageD = cv2.imread('./images/step4.png')
+    # imageA = cv2.imread('./images/step1.png')
+    # imageB = cv2.imread('./images/step2.png')
+    # imageC = cv2.imread('./images/step3.png')
+    # imageD = cv2.imread('./images/step4.png')
 
-    circularity = cal_circularity(imageA)
-    bool, numbers, num_infos = eval_num(imageA, imageB)
-    hour_angle = det_arrow(imageB, imageC)
-    minute_angle = det_arrow(imageC, imageD)
+    # circularity = cal_circularity(imageA)
+    # bool, numbers, num_infos = eval_num(imageA, imageB)
+    # hour_angle = det_arrow(imageB, imageC)
+    # minute_angle = det_arrow(imageC, imageD)
     
-    print(f"circularity: {circularity}")
-    print(f"bool: {bool}")
-    print(f"numbers: {numbers}")
-    print(f"hour_angle: {hour_angle}")
-    print(f"minute_angle: {minute_angle}")
+    # print(f"circularity: {circularity}")
+    # print(f"bool: {bool}")
+    # print(f"numbers: {numbers}")
+    # print(f"hour_angle: {hour_angle}")
+    # print(f"minute_angle: {minute_angle}")
     
-    # result = answering('벌레 물림 증상은?')
-    # print(result)
+    result = answering('복숭아의 효능')
+    print(result)

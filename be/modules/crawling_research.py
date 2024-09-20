@@ -88,7 +88,7 @@ def research_content_from_nia(url):
         metadata = {'source': url}
     )
     
-    return document
+    return [document]
 
 def craw_research_list():
     
@@ -131,11 +131,17 @@ def split_text(document):
     return text_splitter.split_documents(document)
 
 if __name__ == '__main__':
+
+    import split_text
+
     url = "https://www.nia.nih.gov/news/scientists-identify-gene-variant-may-protect-against-apoe-e4-related-alzheimers-risk"
     
     data = research_content_from_nia(url)
-    print(type(data))
+    results = split_text.split_text(data)
+
+    for result in results:
+        print(result)
     
-    research_list = craw_research_from_nia(0)
-    print(type(research_list[0]))
+    # research_list = craw_research_from_nia(0)
+    # print(type(research_list[0]))
     
