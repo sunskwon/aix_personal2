@@ -1,22 +1,13 @@
-import os
 import torch
+from . import rag_prepare
 from datetime import datetime
-# from embedchain import App
 from langchain_community.chat_models import ChatOllama
 from langchain_community.vectorstores import FAISS
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.prompts import PromptTemplate
 from langchain_core.runnables import RunnablePassthrough
 from langchain_huggingface import HuggingFaceEmbeddings
-if __name__ == '__main__':
-    import crawling_research, split_text
-else:
-    from . import crawling_research, split_text
 
-# os.environ["OLLAMA_HOST"] = "http://localhost:11434"
-# script_dir = os.path.dirname(__file__)
-# config_path = os.path.join(script_dir, '..', 'config.yaml')
-# app = App.from_config(config_path=config_path)
 embeddings = HuggingFaceEmbeddings(
     model_name = "BAAI/bge-m3",
     model_kwargs = {'device': 'cuda' if torch.cuda.is_available() else 'cpu'},
@@ -46,54 +37,47 @@ Let's think step-by-step.
 """
 )
 
-# research_list = crawling_research.craw_research_list()
-research_list = crawling_research.craw_research_from_nhis(0)
-research_list.extend(crawling_research.craw_research_from_nia(0))
+research_list = rag_prepare.title_lst_from_nia(0)
+research_list.extend(rag_prepare.title_lst_from_nhis(0))
 
 storage_start_time = datetime.now()
 print(f"storage started at {storage_start_time}")
+
 vector_store = FAISS.from_documents(documents = research_list, embedding = embeddings)
 retriever = vector_store.as_retriever(search_type = 'similarity', search_kwargs = {'k': 1})
+
 storage_end_time = datetime.now()
 print(f"storage ended at {storage_end_time}")
 print(f"storage time duration: {storage_end_time - storage_start_time}")
 
-def answer_rag(query):
+def rag_answer(query):
     
-    # app.reset()
-    # app.db.reset()
-    
-    retriever_start_time = datetime.now()
+    # retriever_start_time = datetime.now()
     # print(f"retrieve started at {retriever_start_time}")
     research = retriever.invoke(query)
-    # print(f"title: {research[0].page_content}")
-    retriever_end_time = datetime.now()
+    # retriever_end_time = datetime.now()
     # print(f"retrieve ended at {retriever_end_time}")
     # print(f"retrieve time duration: {retriever_end_time - retriever_start_time}")
-    research_url = research[0].metadata['source']
     
+    research_url = research[0].metadata['source']
+
     if "https://www.nia.nih.gov/" in research_url:
-        data = crawling_research.research_content_from_nia(research_url)
+        data = rag_prepare.content_from_nia(research_url)
 
     elif "https://www.nhis.or.kr/" in research_url:
-        data = split_text.load_from_nhis_web(research_url)
+        data = rag_prepare.content_from_nhis(research_url)
     
-    split_lst = split_text.split_text(data)
+    split_lst = rag_prepare.split_text(data)
     
     add_start_time = datetime.now()
     # print(f"add started at {add_start_time}")
-    # app.add(research_url, data_type='web_page')
     temp_store = FAISS.from_documents(documents = split_lst, embedding = embeddings)
-    # temp_retriever = temp_store.as_retriever(search_type = 'similarity', search_kwargs = {'k': 2})
-    temp_retriever = temp_store.as_retriever(search_type = 'similarity_score_threshold', search_kwargs = {'score_threshold': 0.8})
+    temp_retriever = temp_store.as_retriever(search_type = 'similarity', search_kwargs = {'k': 2})
     references= temp_retriever.invoke(query)
     for reference in references:
         print(f"reference: {reference}")
     # print(f"distances: {distances}")
     add_end_time = datetime.now()
-    # for distance in distances:
-    #     print(distance)
-    # print(f"add ended at {add_end_time}")
     print(f"add time duration: {add_end_time - add_start_time}")
     
     chain = (
@@ -105,7 +89,6 @@ def answer_rag(query):
     
     generation_start_time = datetime.now()
     print(f"generation started at {generation_start_time}")
-    # answer = app.chat(query)
     answer = chain.invoke(query)
     generation_end_time = datetime.now()
     print(f"generation ended at {generation_end_time}")
@@ -115,7 +98,26 @@ def answer_rag(query):
 
 if __name__ == '__main__':
 
+    # import rag_prepare
+
+    # title_list = rag_prepare.title_lst_from_nia(0)
+    # title_list.extend(rag_prepare.title_lst_from_nhis(0))
+
+    # content_list = []
+    # for title in title_list:
+    #     url = title.metadata['source']
+    #     if 'https://www.nia.nih.gov/' in url:
+    #         content_list.append(rag_prepare.content_from_nia(url))
+    #     else:
+    #         content_list.append(rag_prepare.content_from_nhis(url))
+    
+    # chunk_list = []
+    # for content in content_list:
+    #     chunk_list.extend(rag_prepare.split_text(content))
+
+    # print(chunk_list)
+
     query = "안면마비 증상의 원인?"
     
-    result = answer_rag(query)
+    result = rag_answer(query)
     print(result)

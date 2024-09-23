@@ -1,5 +1,5 @@
-import tensorflow as tf
 import numpy as np
+import tensorflow as tf
 
 def create_ocr_model():
 
@@ -37,10 +37,11 @@ def create_ocr_model():
 
     model.fit(x_train, y_train, batch_size=100, epochs=10, validation_data=(x_test, y_test))
 
-    model.save('my_mnist_model.keras')
-
     result = model.evaluate(x_test, y_test)
     print("최종 예측 성공률(%): ", result[1]*100)
 
+    model.save('my_mnist_model.keras')
+
 if __name__ == '__main__':
+    
     create_ocr_model()

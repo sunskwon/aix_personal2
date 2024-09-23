@@ -1,13 +1,13 @@
 import os
 import torch
 from datetime import datetime
-from embedchain import App
+# from embedchain import App
 from langchain_community.vectorstores import FAISS
 from langchain_huggingface import HuggingFaceEmbeddings
 if __name__ == '__main__':
     import crawling_research
 else:
-    from ..modules import crawling_research
+    from ..modules import rag_prepare
 
 os.environ["OLLAMA_HOST"] = "http://localhost:11434"
 config = {
@@ -49,7 +49,7 @@ embeddings = HuggingFaceEmbeddings(
     encode_kwargs = {'normalize_embeddings': True},
 )
 # research_list = crawling_research.craw_research_list()
-research_list = crawling_research.craw_research_from_nhis(0)
+research_list = rag_prepare.craw_research_from_nhis(0)
 storage_start_time = datetime.now()
 print(f"storage started at {storage_start_time}")
 vector_store = FAISS.from_documents(documents = research_list, embedding = embeddings)

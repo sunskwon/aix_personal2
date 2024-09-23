@@ -5,9 +5,9 @@ from datetime import datetime
 from fastapi import Depends, FastAPI, File, UploadFile, Request
 from fastapi.middleware.cors import CORSMiddleware
 from io import BytesIO
-from modules import calculate_angle, calculate_circularity, create_ocr_model, extract_img_difference, separate_number
-from modules import answer_rag, crawling_research
-from modules import recognition_number
+from modules import cdt_analysis, cdt_preprocess
+from modules import create_ocr_model
+from modules import rag_generation
 from PIL import Image
 from typing import List
 
@@ -22,9 +22,10 @@ app.add_middleware(
 )
 
 if not os.path.isfile("my_mnist_model.keras"):
+    
     create_ocr_model.create_ocr_model()
 
-def answering(query):
+def rag_answering(query):
     
     try:
         last_mark = query[len(query) - 1:]
@@ -32,52 +33,65 @@ def answering(query):
         if last_mark != '?':
             query += '?'
         
-        answer = answer_rag.answer_rag(query)
+        answer = rag_generation.rag_answer(query)
         answer = " ".join(answer.split())
 
         if any('\uAC00' <= char <= '\uD7A3' for char in answer):
             return answer
         else:
             return '{query}에 대한 정보를 찾을수 없습니다.'
+        
     except Exception as e:
+        
         print(e)
         return ''
 
-def cal_circularity(image):
-    
+def clock_drawing_test(img):
+
     try:
-        result = calculate_circularity.det_shape(image)
-        return result
+        img_crop = cdt_preprocess.crop_image(img)
+
+        img_wo_circle, img_circle = cdt_preprocess.separate_circle(img_crop)
+        cv2.imwrite('./images/temp_circle.png', img_circle)
+
+        img_sep_lst = cdt_preprocess.separate_numbers(img_wo_circle)
+
+        img_hour, img_minute = cdt_preprocess.separate_needles(img_crop)
+
+        circularity = cdt_analysis.cal_circularity(img_circle)
+
+        numbers = []
+        num_infos = []
+        for img_sep in img_sep_lst:
+            num = cdt_analysis.recog_number(img_sep['img'])
+            if num >= 1 and num <= 12:
+                numbers.append(str(num))
+                num_infos.append({'num': num, 'rect': img_sep['rect']})
+        
+        temp_nums = set(numbers)
+        numbers = list(temp_nums)
+        numbers = sorted(numbers)
+
+        y_axis = next((item['rect'][1] for item in num_infos if item['num'] == 12), None)
+        if y_axis == None:
+            position = False
+        else:
+            for num_info in num_infos:
+                if num_info['rect'][1] < y_axis:
+                    position = False
+                else:
+                    position = True
+        
+        hour_angle = cdt_analysis.cal_arrow_angle(img_hour)
+        minute_angle = cdt_analysis.cal_arrow_angle(img_minute)
+
+        return circularity, numbers, position, hour_angle, minute_angle
+    
     except Exception as e:
+    
         print(e)
-        return 0.0
+        return 0.0, [], False, 0.0, 0.0
 
-def det_arrow(imageA, imageB):
-    
-    try:
-        diff = extract_img_difference.ext_diff(imageA, imageB)
-
-        angle = calculate_angle.detect_arrow_direction(diff)
-    
-        return angle
-    except Exception as e:
-        print(e)
-        return 0.0
-
-def eval_num(imageA, imageB):
-    
-    try:
-        diff = extract_img_difference.ext_diff(imageA, imageB)
-    
-        sep_imgs = separate_number.preprocess(diff)
-
-        bool, numbers, num_infos = recognition_number.det_num(sep_imgs)
-            
-        return bool, numbers, num_infos
-    except Exception as e:
-        print(e)
-        return False, [], []
-    
 def log_request_time(request: Request):
     start_time = datetime.now()
     request.state.start_time = start_time
@@ -114,7 +128,7 @@ async def upload_file_test(files: List[UploadFile] = File(...)):
 @app.get("/question", dependencies=[Depends(log_request_time)])
 async def receive_question(query: str):
     
-    answer = answering(query)
+    answer = rag_answering(query)
     
     return {
         "answer": answer
@@ -132,39 +146,26 @@ async def upload_file(files: List[UploadFile] = File(...)):
         open_cv_image = np.asarray(image)
         images.append(open_cv_image)
     
-    circularity = cal_circularity(images[0])
-    bool_location, numbers, num_infos = eval_num(images[0], images[1])
-    hour_angle = det_arrow(images[1], images[2])
-    minute_angle = det_arrow(images[2], images[3])
+    circularity, numbers, position, hour_angle, minute_angle = clock_drawing_test(images[0])
     
     return {
         "circularity": circularity,
-        "bool_location": bool_location,
         "numbers": numbers,
-        "num_infos": num_infos,
+        "bool_location": position,
         "hour_angle": hour_angle,
         "minute_angle": minute_angle,
     }
 
 if __name__ == '__main__':
 
-    # import cv2
+    import cv2
 
-    # imageA = cv2.imread('./images/step1.png')
-    # imageB = cv2.imread('./images/step2.png')
-    # imageC = cv2.imread('./images/step3.png')
-    # imageD = cv2.imread('./images/step4.png')
+    img = cv2.imread('./images/5-1.png')
 
-    # circularity = cal_circularity(imageA)
-    # bool, numbers, num_infos = eval_num(imageA, imageB)
-    # hour_angle = det_arrow(imageB, imageC)
-    # minute_angle = det_arrow(imageC, imageD)
-    
-    # print(f"circularity: {circularity}")
-    # print(f"bool: {bool}")
-    # print(f"numbers: {numbers}")
-    # print(f"hour_angle: {hour_angle}")
-    # print(f"minute_angle: {minute_angle}")
-    
-    result = answering('복숭아의 효능')
+    result = clock_drawing_test(img)
     print(result)
+
+    # query = '안면마비 증상의 원인?'
+
+    # result = rag_answering(query)
+    # print(result)
