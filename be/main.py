@@ -52,6 +52,7 @@ def clock_drawing_test(img):
         img_crop = cdt_preprocess.crop_image(img)
 
         img_wo_circle, img_circle = cdt_preprocess.separate_circle(img_crop)
+        cv2.imwrite('./images/temp_wo_circle.png', img_wo_circle)
         cv2.imwrite('./images/temp_circle.png', img_circle)
 
         img_sep_lst = cdt_preprocess.separate_numbers(img_wo_circle)
@@ -62,12 +63,14 @@ def clock_drawing_test(img):
 
         numbers = []
         num_infos = []
+        count_nums = 0
         for img_sep in img_sep_lst:
             num = cdt_analysis.recog_number(img_sep['img'])
+            count_nums += 1
             if num >= 1 and num <= 12:
                 numbers.append(str(num))
                 num_infos.append({'num': num, 'rect': img_sep['rect']})
-        
+
         temp_nums = set(numbers)
         numbers = list(temp_nums)
         numbers = sorted(numbers)
@@ -85,7 +88,16 @@ def clock_drawing_test(img):
         hour_angle = cdt_analysis.cal_arrow_angle(img_hour)
         minute_angle = cdt_analysis.cal_arrow_angle(img_minute)
 
-        return circularity, numbers, position, hour_angle, minute_angle
+        if hour_angle == None:
+            if minute_angle == None:
+                hour_angle = 370.0
+                minute_angle = 370.0
+            else:
+                hour_angle = minute_angle
+        elif minute_angle == None:
+            minute_angle = hour_angle
+
+        return circularity, numbers, count_nums, position, hour_angle, minute_angle
     
     except Exception as e:
     
@@ -146,11 +158,12 @@ async def upload_file(files: List[UploadFile] = File(...)):
         open_cv_image = np.asarray(image)
         images.append(open_cv_image)
     
-    circularity, numbers, position, hour_angle, minute_angle = clock_drawing_test(images[0])
+    circularity, numbers, count_nums, position, hour_angle, minute_angle = clock_drawing_test(images[0])
     
     return {
         "circularity": circularity,
         "numbers": numbers,
+        "count_nums": count_nums,
         "bool_location": position,
         "hour_angle": hour_angle,
         "minute_angle": minute_angle,
@@ -160,7 +173,16 @@ if __name__ == '__main__':
 
     import cv2
 
-    img = cv2.imread('./images/5-1.png')
+    # for i in range(6):
+    #     for j in range (1, 4):
+    #         img_file = f"./images/{i}-{j}.png"
+            
+    #         img = cv2.imread(img_file)
+
+    #         result = clock_drawing_test(img)
+    #         print(f"{i}-{j}: {result}")
+
+    img = cv2.imread('./images/clock.png')
 
     result = clock_drawing_test(img)
     print(result)

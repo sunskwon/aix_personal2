@@ -9,7 +9,7 @@ def crop_image(img):
     # cv2.imshow('img_threshold', img_threshold)
     
     contours, _ = cv2.findContours(img_threshold, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-    # img_contours = cv2.drawContours(img, contours[15], -1, (0, 255, 0), 2)
+    # img_contours = cv2.drawContours(img, contours, -1, (0, 255, 0), 2)
     # cv2.imshow('img_contours', img_contours)
     # for contour in contours:
     #     print(cv2.boundingRect(contour))
@@ -17,7 +17,11 @@ def crop_image(img):
     rects = [cv2.boundingRect(each) for each in contours]
     rects = sorted(rects)
     # x, y, w, h = cv2.boundingRect(contours[0])
-    x, y, w, h = rects[0]
+    # x, y, w, h = rects[0]
+
+    areas = [cv2.contourArea(each) for each in contours]
+    max_index = np.argmax(areas)
+    x, y, w, h = cv2.boundingRect(contours[max_index])
     margin = 10
 
     if w > h:
@@ -49,7 +53,7 @@ def separate_circle(img):
     rects = sorted(rects)
     # print(rects)
     
-    mag = 1.0
+    mag = 1.3
 
     thickness = int(abs(rects[0][2] - rects[1][2]) * mag)
     # print(f"thickness: {thickness}")
@@ -90,18 +94,25 @@ def separate_numbers(img):
     
     cropped_imgs = []
     margin = 15
+    height, width, _ = img.shape
     
     for contour in contours:
-        
-        x, y, w, h = cv2.boundingRect(contour)
-        
-        img_crop = img.copy()[y:y + h, x:x + w]
-        
-        crop_h, crop_w = img_crop.shape[:2]
-        white_background = np.ones((crop_h + (2 * margin), crop_w + (2 * margin), 3), dtype=np.uint8) * 255
-        white_background[margin:margin + crop_h, margin:margin + crop_w] = img_crop
-        
-        cropped_imgs.append({'img': white_background, 'rect': cv2.boundingRect(contour)})
+
+        area = cv2.contourArea(contour)
+        # print(f"area: {area}")
+        if area > (height * width / 400):
+            x, y, w, h = cv2.boundingRect(contour)
+            
+            img_crop = img.copy()[y:y + h, x:x + w]
+            
+            crop_h, crop_w = img_crop.shape[:2]
+            white_background = np.ones((crop_h + (2 * margin), crop_w + (2 * margin), 3), dtype=np.uint8) * 255
+            white_background[margin:margin + crop_h, margin:margin + crop_w] = img_crop
+            # cv2.imshow('white_background', white_background)
+            # cv2.waitKey(0)
+            # cv2.destroyAllWindows()
+            
+            cropped_imgs.append({'img': white_background, 'rect': cv2.boundingRect(contour)})
         
     return cropped_imgs
 
@@ -130,32 +141,33 @@ def separate_needles(img):
 
 if __name__ == '__main__':
 
-    img = cv2.imread('./images/4-1.png')
+    img = cv2.imread('./images/4-3.png')
     # cv2.imshow('img', img)
     # cv2.waitKey(0)
     # cv2.destroyAllWindows()
 
     img_crop = crop_image(img)
     height, width, _ = img_crop.shape
-    cv2.imshow('img_crop', img_crop)
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
-    print(f"height: {height}, width: {width}")
+    # cv2.imshow('img_crop', img_crop)
+    # cv2.waitKey(0)
+    # cv2.destroyAllWindows()
+    # print(f"height: {height}, width: {width}")
     
     img_wo_circle, img_circle = separate_circle(img_crop)
-    cv2.imwrite('./modules/temp_circle.png', img_circle)
-    cv2.imshow('img_wo_circle', img_wo_circle)
-    cv2.imshow('img_circle', img_circle)
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
+    cv2.imwrite('./images/temp_wo_circle.png', img_wo_circle)
+    cv2.imwrite('./images/temp_circle.png', img_circle)
+    # cv2.imshow('img_wo_circle', img_wo_circle)
+    # cv2.imshow('img_circle', img_circle)
+    # cv2.waitKey(0)
+    # cv2.destroyAllWindows()
 
-    # sep_lst = separate_numbers(img_wo_circle)
+    sep_lst = separate_numbers(img_wo_circle)
     # for sep in sep_lst:
     #     cv2.imshow('result', sep['img'])
     #     cv2.waitKey(0)
     #     cv2.destroyAllWindows()
 
-    # img_hour, img_minute = separate_needles(img_crop)
+    img_hour, img_minute = separate_needles(img_crop)
     # cv2.imshow('minute', img_minute)
     # cv2.imshow('hour', img_hour)
     # cv2.waitKey(0)

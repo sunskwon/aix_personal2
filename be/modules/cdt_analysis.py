@@ -33,7 +33,7 @@ def cal_circularity(img):
                 
                 _, (MA, ma), _ = cv2.fitEllipse(contour)
                 aspect_ratio = ma / MA
-                print(f"aspect_ratio: {aspect_ratio}")
+                # print(f"aspect_ratio: {aspect_ratio}")
 
                 area = cv2.contourArea(contour)
                 perimeter = cv2.arcLength(contour, True)
@@ -41,7 +41,7 @@ def cal_circularity(img):
                     circularity = 0
                 else:
                     circularity = (4 * np.pi * area) / (perimeter**2)
-
+                # print(f"circularity: {circularity}")
                 if len(approx) > 6:
                     
                     if circularity >= 0.8:
@@ -60,15 +60,19 @@ def cal_circularity(img):
                     scores.append(0)
             else:
                 scores.append(0)
+
         # print(f"area: {cv2.contourArea(contour)}, len(contour): {len(contour)}, aspect_ratio: {aspect_ratio}, circularity: {circularity}, len(approx): {len(approx)}, ")
     
-    print(scores)
+    # print(scores)
     sum = 0
 
     for score in scores:
         sum += score
     
-    ave = sum / len(scores)
+    if len(scores) > 0:
+        ave = sum / len(scores)
+    else:
+        ave = 0.0
 
     if ave >= 0.8:
         return 1.0
@@ -135,79 +139,107 @@ def recog_number(img):
         
     return number
 
+# def recog_clock(img):
+
+#     model = tf.keras.models.load_model('my_cdt_model.keras')
+
+#     img_resized = cv2.resize(img, (100, 100))
+
+#     img_gray = cv2.cvtColor(img_resized, cv2.COLOR_BGR2GRAY)
+
+#     input_data = img_gray.reshape(1, 100, 100, 1) / 255.0
+
+#     res = np.argmax(model.predict(input_data), axis = -1)
+    
+#     return res
+
 def cal_arrow_angle(img):
 
-    img_gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    try:
 
-    img_blur = cv2.GaussianBlur(img_gray, (5, 5), 0)
+        img_gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
-    edges = cv2.Canny(img_blur, 50, 150)
+        img_blur = cv2.GaussianBlur(img_gray, (5, 5), 0)
 
-    contours, _ = cv2.findContours(edges, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-    
-    height, width = img_gray.shape
-    if height // 2 == width // 2:
-        center = height // 2
-    else:
-        center = max(height, width) // 2
+        edges = cv2.Canny(img_blur, 50, 150)
 
-    for contour in contours:
+        contours, _ = cv2.findContours(edges, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
         
-        epsilon = 0.02 * cv2.arcLength(contour, True)
-        approx = cv2.approxPolyDP(contour, epsilon, True)
+        height, width = img_gray.shape
+        if height // 2 == width // 2:
+            center = height // 2
+        else:
+            center = max(height, width) // 2
 
-        x, y, w, h = cv2.boundingRect(approx)
-        cv2.rectangle(img, (x,y), (x + w, y + h), (0, 255, 0), 2)
-        
-        if h / w > 1.7:
-            # print("vertical")
-            if abs(y + h - center) < abs(y - center):
-                arrow_tip = (x + w // 2, y)
-                start_point = (x + w // 2, y + h)
-            else:
-                arrow_tip = (x + w // 2, y + h)
-                start_point = (x + w // 2, y)
-        elif h / w < 0.2:
-            # print("lateral")
-            if abs(x + w - center) < abs(x - center):
-                arrow_tip = (x, y + h // 2)
-                start_point = (x + w, y + h // 2)
-            else:
-                arrow_tip = (x + w, y + h // 2)
-                start_point = (x, y + h // 2)
-        else:                
-            if abs(x + w - center) < abs(x - center):
-                if abs(y + h - center) < abs(y - center):
-                    # print("2")
-                    arrow_tip = (x, y)
-                    start_point = (x + w, y + h)
-                else:
-                    # print("3")
-                    arrow_tip = (x, y + h)
-                    start_point = (x + w, y)
-            else:
-                if abs(y + h - center) < abs(y - center):
-                    # print("1")
-                    arrow_tip = (x + w, y)
-                    start_point = (x, y + h)
-                else:
-                    # print("4")
-                    arrow_tip = (x + w, y + h)
-                    start_point = (x, y)
+        for contour in contours:
             
-        direction_vector = np.array(arrow_tip) - np.array(start_point)
-        angle = np.arctan2(direction_vector[1], direction_vector[0]) * (180 / np.pi)
-        angle = (angle + 450) % 360  # 0-360도 범위로 조정
+            epsilon = 0.02 * cv2.arcLength(contour, True)
+            approx = cv2.approxPolyDP(contour, epsilon, True)
 
-    return angle
+            x, y, w, h = cv2.boundingRect(approx)
+            cv2.rectangle(img, (x,y), (x + w, y + h), (0, 255, 0), 2)
+            
+            if h / w > 1.7:
+                # print("vertical")
+                if abs(y + h - center) < abs(y - center):
+                    arrow_tip = (x + w // 2, y)
+                    start_point = (x + w // 2, y + h)
+                else:
+                    arrow_tip = (x + w // 2, y + h)
+                    start_point = (x + w // 2, y)
+            elif h / w < 0.2:
+                # print("lateral")
+                if abs(x + w - center) < abs(x - center):
+                    arrow_tip = (x, y + h // 2)
+                    start_point = (x + w, y + h // 2)
+                else:
+                    arrow_tip = (x + w, y + h // 2)
+                    start_point = (x, y + h // 2)
+            else:                
+                if abs(x + w - center) < abs(x - center):
+                    if abs(y + h - center) < abs(y - center):
+                        # print("2")
+                        arrow_tip = (x, y)
+                        start_point = (x + w, y + h)
+                    else:
+                        # print("3")
+                        arrow_tip = (x, y + h)
+                        start_point = (x + w, y)
+                else:
+                    if abs(y + h - center) < abs(y - center):
+                        # print("1")
+                        arrow_tip = (x + w, y)
+                        start_point = (x, y + h)
+                    else:
+                        # print("4")
+                        arrow_tip = (x + w, y + h)
+                        start_point = (x, y)
+                
+            direction_vector = np.array(arrow_tip) - np.array(start_point)
+            angle = np.arctan2(direction_vector[1], direction_vector[0]) * (180 / np.pi)
+            angle = (angle + 450) % 360  # 0-360도 범위로 조정
+
+        return angle
+    
+    except Exception as e:
+        
+        print(e)
+        return None
 
 if __name__ == '__main__':
     
     img = cv2.imread('./images/temp_circle.png')
     print(cal_circularity(img))
 
-    # img = cv2.imread('./images/numbers.png')
+    # img = cv2.imread('./images/arrow.png')
     # print(recog_number(img))
     
     # img = cv2.imread('./images/arrow.png')
     # print(cal_arrow_angle(img))
+
+    # for i in range(6):
+    #     for j in range(1, 4):
+    #         file_name = f"./images/{i}-{j}.png"
+    #         img = cv2.imread(file_name)
+    #         result = recog_clock(img)
+    #         print(f"{i}-{j}.png : {result}")
