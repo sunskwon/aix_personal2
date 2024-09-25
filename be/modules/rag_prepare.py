@@ -6,7 +6,8 @@ from langchain.schema import Document
 from langchain_community.document_loaders import WebBaseLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 
-text_splitter = RecursiveCharacterTextSplitter(chunk_size=400, chunk_overlap=40)
+topic_splitter = RecursiveCharacterTextSplitter(chunk_size=100, chunk_overlap=10)
+text_splitter = RecursiveCharacterTextSplitter(chunk_size=800, chunk_overlap=40)
     
 def title_lst_from_nia(page_num):
     
@@ -157,6 +158,10 @@ def load_from_nhis_web(url):
     )
     
     return loader.load()
+
+def split_topic(document):
+    
+    return topic_splitter.split_documents(document)
 
 def split_text(document):
     

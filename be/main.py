@@ -5,7 +5,7 @@ from datetime import datetime
 from fastapi import Depends, FastAPI, File, UploadFile, Request
 from fastapi.middleware.cors import CORSMiddleware
 from io import BytesIO
-from modules import cdt_analysis, cdt_preprocess
+from modules import cdt_analysis, cdt_llm_assist, cdt_preprocess
 from modules import create_ocr_model
 from modules import rag_generation
 from PIL import Image
@@ -63,17 +63,21 @@ def clock_drawing_test(img):
 
         numbers = []
         num_infos = []
-        count_nums = 0
+        # count_nums = 0
         for img_sep in img_sep_lst:
             num = cdt_analysis.recog_number(img_sep['img'])
-            count_nums += 1
+            # count_nums += 1
             if num >= 1 and num <= 12:
-                numbers.append(str(num))
+                numbers.append(num)
                 num_infos.append({'num': num, 'rect': img_sep['rect']})
+        numbers = set(numbers)
+        llm_numbers = cdt_llm_assist.process_image(img_crop)
+        llm_numbers = set(llm_numbers)
 
-        temp_nums = set(numbers)
-        numbers = list(temp_nums)
-        numbers = sorted(numbers)
+        diff_numbers = list(llm_numbers - numbers)
+        numbers = list(llm_numbers | numbers)
+
+        print(f"diff_numbers: {diff_numbers}")
 
         y_axis = next((item['rect'][1] for item in num_infos if item['num'] == 12), None)
         if y_axis == None:
@@ -97,7 +101,7 @@ def clock_drawing_test(img):
         elif minute_angle == None:
             minute_angle = hour_angle
 
-        return circularity, numbers, count_nums, position, hour_angle, minute_angle
+        return circularity, numbers, position, hour_angle, minute_angle
     
     except Exception as e:
     
@@ -158,12 +162,12 @@ async def upload_file(files: List[UploadFile] = File(...)):
         open_cv_image = np.asarray(image)
         images.append(open_cv_image)
     
-    circularity, numbers, count_nums, position, hour_angle, minute_angle = clock_drawing_test(images[0])
+    circularity, numbers, position, hour_angle, minute_angle = clock_drawing_test(images[0])
     
     return {
         "circularity": circularity,
         "numbers": numbers,
-        "count_nums": count_nums,
+        # "count_nums": count_nums,
         "bool_location": position,
         "hour_angle": hour_angle,
         "minute_angle": minute_angle,
@@ -173,14 +177,14 @@ if __name__ == '__main__':
 
     import cv2
 
-    # for i in range(6):
-    #     for j in range (1, 4):
-    #         img_file = f"./images/{i}-{j}.png"
+    for i in range(6):
+        for j in range (1, 4):
+            img_file = f"./images/{i}-{j}.png"
             
-    #         img = cv2.imread(img_file)
+            img = cv2.imread(img_file)
 
-    #         result = clock_drawing_test(img)
-    #         print(f"{i}-{j}: {result}")
+            result = clock_drawing_test(img)
+            print(f"{i}-{j}: {result}")
 
     img = cv2.imread('./images/clock.png')
 

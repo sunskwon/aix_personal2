@@ -1,3 +1,4 @@
+import cv2
 from io import BytesIO
 from ollama import generate
 from PIL import Image
@@ -40,18 +41,19 @@ Question:
 list all numbers in image
 """
 
-# for i in range(6):
-#     for j in range(1, 4):
-#         url = f"./images/{i}-{j}.png"
+for i in range(6):
+    for j in range(1, 4):
+        
+        image_dir = f"./images/{i}-{j}.png"
 
-#         description = process_image(url, custom_prompt)
-#         print(" ")
-#         print(f"Final Description of {i}-{j}: ", description)
-#         print(" ")
+        description = process_image(image_dir, custom_prompt)
 
-description1 = process_image('./images/4-3.png', custom_prompt)
-description2 = process_image('./images/temp_wo_circle.png', custom_prompt)
+        print(f"{i}-{j}: {description}")
 
-print()
-print(description1)
-print(description2)
+
+# description1 = process_image('./images/4-3.png', custom_prompt)
+# description2 = process_image('./images/temp_wo_circle.png', custom_prompt)
+
+# print()
+# print(description1)
+# print(description2)
