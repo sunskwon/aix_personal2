@@ -26,24 +26,15 @@ class _ResultPageState extends State<ResultPage> {
   Future<void> _uploadImages() async {
     try {
       final directory = await getApplicationDocumentsDirectory();
-      final filePaths = [
-        '${directory.path}/step1.png',
-        '${directory.path}/step2.png',
-        '${directory.path}/step3.png',
-        '${directory.path}/step4.png',
-      ];
+      final filePath = '${directory.path}/clock.png';
 
       final formData = FormData();
 
-      for (int i = 0; i < filePaths.length; i++) {
-        if (File(filePaths[i]).existsSync()) {
-          formData.files.add(
-            MapEntry(
-                'files',
-                await MultipartFile.fromFile(filePaths[i],
-                    filename: 'step${i + 1}.png')),
-          );
-        }
+      if (File(filePath).existsSync()) {
+        formData.files.add(
+          MapEntry('file',
+              await MultipartFile.fromFile(filePath, filename: 'clock.png')),
+        );
       }
 
       final response = await _dio.post(
@@ -98,10 +89,11 @@ class ResultDisplay extends StatelessWidget {
   Widget build(BuildContext context) {
     double score = 0;
     String _instruction = '';
+
+    double shape_score = result['circularity'];
     double hour_angle = result['hour_angle'];
     double minute_angle = result['minute_angle'];
 
-    double shape_score = result['circularity'];
     double position_score = result['bool_location'] ? 1 : 0;
     double number_score = result['numbers'].length > 10
         ? 1
@@ -189,47 +181,73 @@ class ResultDisplay extends StatelessWidget {
           child: Column(
             children: [
               Text(
-                '테두리: ${(shape_score * 20).toInt() ?? 0}점',
+                '세부 내용',
                 style: TextStyle(
                   fontSize: 14,
-                  fontWeight: FontWeight.w400,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
               SizedBox(
-                height: 5,
+                height: 10,
               ),
-              Text(
-                '숫자의 위치: ${(position_score * 20).toInt()}점',
-                style: TextStyle(
-                  fontSize: 14,
-                ),
-              ),
+              shape_score == 1.0
+                  ? SizedBox()
+                  : Text(
+                      '시계 테두리가 원형이 되도록 신경써주세요',
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
               SizedBox(
                 height: 5,
               ),
-              Text(
-                '숫자의 갯수: ${(number_score * 20).toInt()}점',
-                style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w400,
-                ),
-              ),
-              Text(
-                '${result['numbers'].length > 0 ? '(' + result['numbers'].join(', ') + ')' : ''}',
-                style: TextStyle(
-                  fontSize: 10,
-                ),
-              ),
+              position_score == 1
+                  ? SizedBox()
+                  : Text(
+                      '숫자들이 제자리에 있는지 신경써주세요',
+                      style: TextStyle(
+                        fontSize: 14,
+                      ),
+                    ),
               SizedBox(
                 height: 5,
               ),
-              Text(
-                '시침과 분침: ${((hour_score + minute_score) * 20).toInt()}점',
-                style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w400,
-                ),
+              number_score == 1
+                  ? SizedBox()
+                  : Text(
+                      '1부터 12까지 숫자들을 모두 작성했는지 신경써주세요',
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+              // Text(
+              //   '${result['numbers'].length > 0 ? '(' + result['numbers'].join(', ') + ')' : ''}',
+              //   style: TextStyle(
+              //     fontSize: 10,
+              //   ),
+              // ),
+              SizedBox(
+                height: 5,
               ),
+              hour_score == 1.0 && minute_score == 1.0
+                  ? SizedBox()
+                  : hour_angle == minute_angle
+                      ? Text(
+                          '시침과 분침이 11시 10분을 가리키는지 신경써주세요',
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        )
+                      : Text(
+                          '시침, 분침의 방향에 신경써주세요',
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
             ],
           ),
         ),

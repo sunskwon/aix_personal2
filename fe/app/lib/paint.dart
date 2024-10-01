@@ -39,22 +39,7 @@ class DrawingScreen extends StatefulWidget {
 class _DrawingScreenState extends State<DrawingScreen> {
   final GlobalKey _repaintBoundaryKey = GlobalKey();
   List<Offset?> points = [];
-  int _step = 1;
-
-  String get _instruction {
-    switch (_step) {
-      case 1:
-        return '1단계:\n시계의 테두리를 그려주세요';
-      case 2:
-        return '2단계:\n시계의 숫자를 그려주세요';
-      case 3:
-        return '3단계:\n11:10에 해당하는 시침을 그려주세요';
-      case 4:
-        return '4단계:\n11:10에 해당하는 분침을 그려주세요';
-      default:
-        return '';
-    }
-  }
+  bool isDrawing = true;
 
   @override
   Widget build(BuildContext context) {
@@ -66,9 +51,31 @@ class _DrawingScreenState extends State<DrawingScreen> {
           Container(
             width: 400,
             padding: EdgeInsets.all(10.0),
-            child: Text(
-              _instruction,
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            child: Text.rich(
+              TextSpan(
+                text: '11시 10분',
+                style: TextStyle(fontSize: 36, fontWeight: FontWeight.bold),
+                children: [
+                  TextSpan(
+                    text: '을 가리키는\n',
+                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                  ),
+                  TextSpan(
+                    text: '시계',
+                    style: TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.blueAccent),
+                  ),
+                  TextSpan(
+                    text: '를 그려주세요',
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
           SizedBox(
@@ -76,7 +83,7 @@ class _DrawingScreenState extends State<DrawingScreen> {
           ),
           Container(
             width: 400,
-            height: 400,
+            height: 500,
             decoration: BoxDecoration(
               border: Border.all(
                 color: Colors.black,
@@ -107,6 +114,44 @@ class _DrawingScreenState extends State<DrawingScreen> {
                     },
                   ),
                 ),
+                // Positioned(
+                //   bottom: 10,
+                //   right: 80,
+                //   child: FloatingActionButton(
+                //     child: Icon(isDrawing ? Icons.draw : Icons.check),
+                //     backgroundColor: Colors.black,
+                //     shape: RoundedRectangleBorder(
+                //       borderRadius: BorderRadius.circular(40),
+                //     ),
+                //     onPressed: () {
+                //       setState(() {
+                //         isDrawing = !isDrawing;
+                //       });
+                //     },
+                //   ),
+                // ),
+                // Positioned(
+                //   bottom: 10,
+                //   right: 10,
+                //   child: FloatingActionButton(
+                //     child: Icon(Icons.phonelink_erase),
+                //     backgroundColor: Colors.black,
+                //     shape: RoundedRectangleBorder(
+                //       borderRadius: BorderRadius.circular(40),
+                //     ),
+                //     onPressed: () {
+                //       setState(() {
+                //         if (isDrawing) {
+                //           points.clear();
+                //         } else {
+                //           if (points.isNotEmpty) {
+                //             points.removeLast();
+                //           }
+                //         }
+                //       });
+                //     },
+                //   ),
+                // ),
               ],
             ),
           ),
@@ -119,53 +164,28 @@ class _DrawingScreenState extends State<DrawingScreen> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                if (_step == 4)
-                  ElevatedButton(
-                    style: ButtonStyle(
-                      backgroundColor:
-                          MaterialStateProperty.all(Colors.blueAccent),
-                      padding: MaterialStateProperty.all(EdgeInsets.symmetric(
-                        horizontal: 10,
-                        vertical: 5,
-                      )),
-                    ),
-                    onPressed: () async {
-                      await _saveToFile();
-                      Navigator.of(context).pushReplacementNamed('/result');
-                    },
-                    child: Text(
-                      '결과 확인',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
+                ElevatedButton(
+                  style: ButtonStyle(
+                    backgroundColor:
+                        MaterialStateProperty.all(Colors.blueAccent),
+                    padding: MaterialStateProperty.all(EdgeInsets.symmetric(
+                      horizontal: 10,
+                      vertical: 5,
+                    )),
+                  ),
+                  onPressed: () async {
+                    await _saveToFile();
+                    Navigator.of(context).pushReplacementNamed('/result');
+                  },
+                  child: Text(
+                    '결과 확인',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
                     ),
                   ),
-                if (_step < 4)
-                  ElevatedButton(
-                    style: ButtonStyle(
-                      backgroundColor:
-                          MaterialStateProperty.all(Colors.blueAccent),
-                      padding: MaterialStateProperty.all(EdgeInsets.symmetric(
-                        horizontal: 10,
-                        vertical: 5,
-                      )),
-                    ),
-                    onPressed: () async {
-                      await _saveToFile();
-                      setState(() {
-                        if (_step < 4) _step++;
-                      });
-                    },
-                    child: Text(
-                      '다음',
-                      style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: ui.FontWeight.bold,
-                          color: Colors.white),
-                    ),
-                  ),
+                ),
                 SizedBox(
                   width: 20,
                 ),
@@ -186,10 +206,10 @@ class _DrawingScreenState extends State<DrawingScreen> {
                     ),
                   ),
                   onPressed: () {
-                    setState(() {
-                      if (_step != 1) _step = 1;
-                    });
                     points.clear();
+                    setState(() {
+
+                    });
                   },
                   child: Text(
                     '초기화',
@@ -224,7 +244,7 @@ class _DrawingScreenState extends State<DrawingScreen> {
     canvas.drawImageRect(
       originalImage,
       Rect.fromLTWH(0, 0, width, height),
-      Rect.fromLTWH(0, 0, 400, 400),
+      Rect.fromLTWH(0, 0, 400, 500),
       paint,
     );
 
@@ -236,7 +256,7 @@ class _DrawingScreenState extends State<DrawingScreen> {
     final Uint8List imageBytes = byteData!.buffer.asUint8List();
 
     final directory = await getApplicationDocumentsDirectory();
-    final imagePath = '${directory.path}/step$_step.png';
+    final imagePath = '${directory.path}/clock.png';
     final file = File(imagePath);
 
     await file.writeAsBytes(imageBytes);

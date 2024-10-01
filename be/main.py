@@ -126,16 +126,14 @@ async def receive_question_test(query: str):
     }
     
 @app.post("/uploadtest")
-async def upload_file_test(files: List[UploadFile] = File(...)):
+async def upload_file_test(file: UploadFile = File(...)):
     
-    for file in files:
-        
-        image_data = await file.read()
-        image = Image.open(BytesIO(image_data))
-        open_cv_image = np.asarray(image)
-        cv2.imshow("image", open_cv_image)
-        cv2.waitKey(0)
-        cv2.destroyAllWindows()
+    image_data = await file.read()
+    image = Image.open(BytesIO(image_data))
+    open_cv_image = np.asarray(image)
+    cv2.imshow("image", open_cv_image)
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
             
     return {
         "result": "hi",
@@ -151,18 +149,14 @@ async def receive_question(query: str):
     }
 
 @app.post("/uploadfile")
-async def upload_file(files: List[UploadFile] = File(...)):
+async def upload_file(file: UploadFile = File(...)):
     
-    images = []
+    image_data = await file.read()
+    image = Image.open(BytesIO(image_data))
+    open_cv_image = np.asarray(image)
+    open_cv_image = open_cv_image[:, :, :3]
     
-    for file in files:
-        
-        image_data = await file.read()
-        image = Image.open(BytesIO(image_data))
-        open_cv_image = np.asarray(image)
-        images.append(open_cv_image)
-    
-    circularity, numbers, position, hour_angle, minute_angle = clock_drawing_test(images[0])
+    circularity, numbers, position, hour_angle, minute_angle = clock_drawing_test(open_cv_image)
     
     return {
         "circularity": circularity,
