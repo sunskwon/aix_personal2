@@ -4,6 +4,7 @@ import os
 from datetime import datetime
 from fastapi import Depends, FastAPI, File, UploadFile, Request
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import FileResponse
 from io import BytesIO
 from modules import cdt_analysis, cdt_llm_assist, cdt_preprocess
 from modules import create_ocr_model
@@ -52,12 +53,16 @@ def clock_drawing_test(img):
         img_crop = cdt_preprocess.crop_image(img)
 
         img_wo_circle, img_circle = cdt_preprocess.separate_circle(img_crop)
-        cv2.imwrite('./images/temp_wo_circle.png', img_wo_circle)
-        cv2.imwrite('./images/temp_circle.png', img_circle)
+        # cv2.imwrite('./images/temp_wo_circle.png', img_wo_circle)
+        # cv2.imwrite('./images/temp_circle.png', img_circle)
 
         img_sep_lst = cdt_preprocess.separate_numbers(img_wo_circle)
+        # for i in range(len(img_sep_lst)):
+        #     cv2.imwrite(f'./images/temp_{i}.png', img_sep_lst[i]['img'])
 
         img_hour, img_minute = cdt_preprocess.separate_needles(img_crop)
+        # cv2.imwrite('./images/temp_hour.png', img_hour)
+        # cv2.imwrite('./images/temp_minute.png', img_minute)
 
         circularity = cdt_analysis.cal_circularity(img_circle)
 
@@ -124,6 +129,16 @@ async def receive_question_test(query: str):
     return {
         "result": query,
     }
+
+@app.post("/downloadtest/{file_name}")
+async def download_file_test(file_name: str):
+
+    image_path = f"./images/{file_name}.png"
+
+    if os.path.exists(image_path):
+        return FileResponse(image_path)
+    else:
+        return {"error": "image not found"}
     
 @app.post("/uploadtest")
 async def upload_file_test(file: UploadFile = File(...)):
@@ -146,6 +161,15 @@ async def receive_question(query: str):
     
     return {
         "answer": answer
+    }
+
+@app.post("/downloadfile")
+async def download_file(query: str):
+
+    img = cv2.imread(f'{query}.png')
+
+    return {
+        "answer": None
     }
 
 @app.post("/uploadfile")
@@ -171,14 +195,14 @@ if __name__ == '__main__':
 
     import cv2
 
-    for i in range(6):
-        for j in range (1, 4):
-            img_file = f"./images/{i}-{j}.png"
+    # for i in range(6):
+    #     for j in range (1, 4):
+    #         img_file = f"./images/{i}-{j}.png"
             
-            img = cv2.imread(img_file)
+    #         img = cv2.imread(img_file)
 
-            result = clock_drawing_test(img)
-            print(f"{i}-{j}: {result}")
+    #         result = clock_drawing_test(img)
+    #         print(f"{i}-{j}: {result}")
 
     img = cv2.imread('./images/clock.png')
 

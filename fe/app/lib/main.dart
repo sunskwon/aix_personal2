@@ -5,6 +5,7 @@ import 'result.dart';
 import 'select.dart';
 import 'talk.dart';
 import 'welcome.dart';
+import 'example.dart';
 
 void main() {
   runApp(const MyApp());
@@ -24,6 +25,7 @@ class MyApp extends StatelessWidget {
         '/paint': (context) => ClockPaint(),
         '/result': (context) => ResultPage(),
         '/talk': (context) => TalkPage(),
+        '/example': (context) => ExamplePage(),
       },
     );
   }
