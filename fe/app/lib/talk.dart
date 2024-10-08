@@ -109,7 +109,12 @@ class _TalkPageState extends State<TalkPage> {
                         child: Container(
                           padding: EdgeInsets.all(8.0),
                           decoration: BoxDecoration(
-                            color: key == 'user' ? Colors.green : Colors.orange,
+                            border: Border.all(
+                              color: key == 'user' ? Colors.green : Colors.orange,
+                              width: 2.0,
+                              style: BorderStyle.solid,
+                            ),
+                            // color: key == 'user' ? Colors.green : Colors.orange,
                             borderRadius: BorderRadius.circular(10.0),
                           ),
                           child: Text(

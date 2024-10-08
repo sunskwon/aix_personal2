@@ -94,7 +94,7 @@ class ResultDisplay extends StatelessWidget {
     double hour_angle = result['hour_angle'];
     double minute_angle = result['minute_angle'];
 
-    double position_score = result['bool_location'] ? 1 : 0;
+    double position_score = result['locations'];
     double number_score = result['numbers'].length > 10
         ? 1
         : result['numbers'].length > 7
@@ -141,10 +141,10 @@ class ResultDisplay extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
-                  color: score >= 80
+                  color: score >= 70
                       ? Colors.green
-                      : score >= 40
-                          ? Colors.yellow
+                      : score >= 50
+                          ? Colors.orange
                           : Colors.red,
                 ),
               )
@@ -165,15 +165,15 @@ class ResultDisplay extends StatelessWidget {
         SizedBox(
           height: 20,
         ),
-        Container(
+        if (score.toInt() != 100) Container(
           padding: EdgeInsets.all(10.0),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
             border: Border.all(
-              color: score >= 80
+              color: score >= 70
                   ? Colors.green
-                  : score >= 40
-                      ? Colors.yellow
+                  : score >= 50
+                      ? Colors.orange
                       : Colors.red,
               width: 2.0,
             ),

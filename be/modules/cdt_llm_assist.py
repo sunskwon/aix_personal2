@@ -6,7 +6,7 @@ You are the explainer who explains the image.
 Please answer the Question based on the given image.
 
 Question:
-List all numbers in image.
+List all clearly recognizable numbers in the image.
 Each items must be separated by a comma.
 """
 
@@ -21,6 +21,7 @@ def process_image(img):
         prompt=prompt, 
         images=[image_bytes],
     )
+    # print(result['response'])
 
     answer = []
 
@@ -59,19 +60,19 @@ def process_image(img):
 
 if __name__ == '__main__':
 
-    # for i in range(6):
-    #     for j in range(1, 4):
+    for i in range(6):
+        for j in range(1, 4):
             
-    #         image_dir = f"./images/{i}-{j}.png"
+            image_dir = f"./images/{i}-{j}.png"
             
-    #         img = cv2.imread(image_dir)
+            img = cv2.imread(image_dir)
             
-    #         description = process_image(img)
+            description = process_image(img)
 
-    #         print(f"{i}-{j}: {description}")
+            print(f"{i}-{j}: {description}")
 
-    img = cv2.imread('./images/0-2.png')
+    # img = cv2.imread('./images/0-2.png')
 
-    description = process_image(img)
+    # description = process_image(img)
 
-    print(description)
+    # print(description)

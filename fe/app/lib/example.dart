@@ -32,6 +32,30 @@ class _ImageScreenState extends State<ImageScreen> {
   String? imagePath;
   String? errorMessage;
   Map<String, dynamic>? _result;
+  bool isLoading = false;
+
+  final List<String> _urls = [
+    'http://10.0.2.2:8000/downloadtest/0-1',
+    'http://10.0.2.2:8000/downloadtest/0-2',
+    'http://10.0.2.2:8000/downloadtest/0-3',
+    'http://10.0.2.2:8000/downloadtest/1-1',
+    'http://10.0.2.2:8000/downloadtest/1-2',
+    'http://10.0.2.2:8000/downloadtest/1-3',
+    'http://10.0.2.2:8000/downloadtest/2-1',
+    'http://10.0.2.2:8000/downloadtest/2-2',
+    'http://10.0.2.2:8000/downloadtest/2-3',
+    'http://10.0.2.2:8000/downloadtest/3-1',
+    'http://10.0.2.2:8000/downloadtest/3-2',
+    'http://10.0.2.2:8000/downloadtest/3-3',
+    'http://10.0.2.2:8000/downloadtest/4-1',
+    'http://10.0.2.2:8000/downloadtest/4-2',
+    'http://10.0.2.2:8000/downloadtest/4-3',
+    'http://10.0.2.2:8000/downloadtest/5-1',
+    'http://10.0.2.2:8000/downloadtest/5-2',
+    'http://10.0.2.2:8000/downloadtest/5-3',
+  ];
+
+  String _selectedUrl = 'http://10.0.2.2:8000/downloadtest/5-3';
 
   @override
   void initState() {
@@ -40,9 +64,14 @@ class _ImageScreenState extends State<ImageScreen> {
   }
 
   Future<void> fetchImage() async {
+    setState(() {
+      isLoading = true;
+      errorMessage = null;
+    });
+
     try {
       final response = await Dio().post(
-        'http://10.0.2.2:8000/downloadtest/0-2',
+        _selectedUrl,
         options: Options(responseType: ResponseType.bytes),
       );
 
@@ -62,12 +91,17 @@ class _ImageScreenState extends State<ImageScreen> {
       setState(() {
         errorMessage = 'Error: $e';
       });
+    } finally {
+      setState(() {
+        isLoading = false;
+      });
     }
   }
 
   Future<String> saveImageToFile(Uint8List bytes) async {
     final directory = await getTemporaryDirectory();
-    final filePath = '${directory.path}/downloaded_image.png';
+    final filePath =
+        '${directory.path}/downloaded_image_${DateTime.now().millisecondsSinceEpoch}.png';
     final file = File(filePath);
 
     await file.writeAsBytes(bytes);
@@ -110,20 +144,47 @@ class _ImageScreenState extends State<ImageScreen> {
     }
   }
 
+  void _updateUrl(String? newValue) {
+    setState(() {
+      _selectedUrl = newValue!;
+      _result = null;
+      fetchImage();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: _result != null
-            ? Column(
-                children: [
-                  Image.file(File(imagePath!)),
-                  ResultDisplay(result: _result!),
-                ],
-              )
-            : errorMessage != null
-                ? Text(errorMessage!)
-                : CircularProgressIndicator(),
+      body: SingleChildScrollView(
+        child: Center(
+          child: Column(
+            children: [
+              DropdownButton<String>(
+                value: _selectedUrl,
+                items: _urls.map((String url) {
+                  return DropdownMenuItem(
+                    value: url,
+                    child: Text(url),
+                  );
+                }).toList(),
+                onChanged: _updateUrl,
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              if (isLoading) CircularProgressIndicator(),
+              if (errorMessage != null)
+                Text(errorMessage!, style: TextStyle(color: Colors.red)),
+              if (_result != null && !isLoading)
+                Column(
+                  children: [
+                    Image.file(File(imagePath!)),
+                    ResultDisplay(result: _result!),
+                  ],
+                ),
+            ],
+          ),
+        ),
       ),
     );
   }
@@ -143,7 +204,7 @@ class ResultDisplay extends StatelessWidget {
     double hour_angle = result['hour_angle'];
     double minute_angle = result['minute_angle'];
 
-    double position_score = result['bool_location'] ? 1 : 0;
+    double position_score = result['locations'];
     double number_score = result['numbers'].length > 10
         ? 1
         : result['numbers'].length > 7
@@ -190,10 +251,10 @@ class ResultDisplay extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
-                  color: score >= 80
+                  color: score >= 70
                       ? Colors.green
-                      : score >= 40
-                          ? Colors.yellow
+                      : score >= 50
+                          ? Colors.orange
                           : Colors.red,
                 ),
               )
@@ -214,15 +275,15 @@ class ResultDisplay extends StatelessWidget {
         SizedBox(
           height: 20,
         ),
-        Container(
+        if (score.toInt() != 100) Container(
           padding: EdgeInsets.all(10.0),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
             border: Border.all(
-              color: score >= 80
+              color: score >= 70
                   ? Colors.green
-                  : score >= 40
-                      ? Colors.yellow
+                  : score >= 50
+                      ? Colors.orange
                       : Colors.red,
               width: 2.0,
             ),

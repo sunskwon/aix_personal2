@@ -84,6 +84,27 @@ def clock_drawing_test(img):
 
         print(f"diff_numbers: {diff_numbers}")
 
+        positions = 0.0
+        x_sorted = sorted(num_infos, key=lambda x:x['rect'][0])
+        y_sorted = sorted(num_infos, key=lambda x:x['rect'][1])
+
+        if 9 in numbers:
+            positions += 0.05
+            if x_sorted[0]['num'] == 9:
+                positions += 0.2
+        if 3 in numbers:
+            positions += 0.05
+            if x_sorted[-1]['num'] == 3:
+                positions += 0.2
+        if 12 in numbers:
+            positions += 0.05
+            if y_sorted[0]['num'] == 12:
+                positions += 0.2
+        if 6 in numbers:
+            positions += 0.05
+            if y_sorted[-1]['num'] == 6:
+                positions += 0.2
+
         y_axis = next((item['rect'][1] for item in num_infos if item['num'] == 12), None)
         if y_axis == None:
             position = False
@@ -106,12 +127,12 @@ def clock_drawing_test(img):
         elif minute_angle == None:
             minute_angle = hour_angle
 
-        return circularity, numbers, position, hour_angle, minute_angle
+        return circularity, numbers, position, positions, hour_angle, minute_angle
     
     except Exception as e:
     
         print(e)
-        return 0.0, [], False, 0.0, 0.0
+        return 0.0, [], 0.0, False, 0.0, 0.0
 
 def log_request_time(request: Request):
     start_time = datetime.now()
@@ -180,13 +201,14 @@ async def upload_file(file: UploadFile = File(...)):
     open_cv_image = np.asarray(image)
     open_cv_image = open_cv_image[:, :, :3]
     
-    circularity, numbers, position, hour_angle, minute_angle = clock_drawing_test(open_cv_image)
+    circularity, numbers, position, positions, hour_angle, minute_angle = clock_drawing_test(open_cv_image)
     
     return {
         "circularity": circularity,
         "numbers": numbers,
         # "count_nums": count_nums,
         "bool_location": position,
+        "locations": positions,
         "hour_angle": hour_angle,
         "minute_angle": minute_angle,
     }
@@ -195,19 +217,19 @@ if __name__ == '__main__':
 
     import cv2
 
-    # for i in range(6):
-    #     for j in range (1, 4):
-    #         img_file = f"./images/{i}-{j}.png"
+    for i in range(6):
+        for j in range (1, 4):
+            img_file = f"./images/{i}-{j}.png"
             
-    #         img = cv2.imread(img_file)
+            img = cv2.imread(img_file)
 
-    #         result = clock_drawing_test(img)
-    #         print(f"{i}-{j}: {result}")
+            result = clock_drawing_test(img)
+            print(f"{i}-{j}: {result}")
 
-    img = cv2.imread('./images/clock.png')
+    # img = cv2.imread('./images/clock.png')
 
-    result = clock_drawing_test(img)
-    print(result)
+    # result = clock_drawing_test(img)
+    # print(result)
 
     # query = '안면마비 증상의 원인?'
 
