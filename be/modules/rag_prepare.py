@@ -63,15 +63,15 @@ def craw_title_list():
     
     title_list = []
     
-    while not is_nia_empty:
-        print(f"nia_page: {nia_page}")
-        temp_list = title_lst_from_nia(nia_page)
+    # while not is_nia_empty:
+    #     print(f"nia_page: {nia_page}")
+    #     temp_list = title_lst_from_nia(nia_page)
         
-        if len(temp_list) > 0:
-            title_list.extend(temp_list)
-            nia_page += 1
-        else:
-            is_nia_empty = True
+    #     if len(temp_list) > 0:
+    #         title_list.extend(temp_list)
+    #         nia_page += 1
+    #     else:
+    #         is_nia_empty = True
     
     while not is_nhis_empty:
         print(f"nhis_page: {nhis_page}")

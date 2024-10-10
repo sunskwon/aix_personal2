@@ -43,7 +43,9 @@ Let's think step-by-step.
 )
 
 # research_list = rag_prepare.title_lst_from_nia(0)
-title_list = rag_prepare.title_lst_from_nhis(0)
+# title_list = rag_prepare.title_lst_from_nhis(0)
+# title_list.extend(rag_prepare.title_lst_from_nhis(1))
+title_list = rag_prepare.craw_title_list()
 
 content_list = []
 for title in title_list:
@@ -52,6 +54,7 @@ for title in title_list:
         content_list.append(rag_prepare.content_from_nia(url))
     else:
         content_list.append(rag_prepare.content_from_nhis(url))
+    print(len(content_list))
 
 chunk_list = []
 for content in content_list:
@@ -130,6 +133,62 @@ def rag_answer(query):
     
     return answer
 
+def rag_answer_test(query):
+
+    models = ['gemma2:2b', 'qwen2:1.5b-instruct', 'llama3.2:latest', 'qwen2.5:1.5b']
+    
+    content = retriever.invoke(query)
+    print(f"content: {content}")
+    
+    content_url = content[0].metadata['source']
+
+    if "https://www.nia.nih.gov/" in content_url:
+        data = rag_prepare.content_from_nia(content_url)
+
+    elif "https://www.nhis.or.kr/" in content_url:
+        data = rag_prepare.content_from_nhis(content_url)
+    
+    split_lst = rag_prepare.split_text(data)
+    
+    add_start_time = datetime.now()
+
+    temp_store = FAISS.from_documents(documents = split_lst, embedding = embeddings)
+    temp_retriever = temp_store.as_retriever(
+        search_type="similarity_score_threshold",
+        search_kwargs={'score_threshold': 0.3,}
+        )
+    references= temp_retriever.invoke(query)
+    for reference in references:
+        print(f"reference: {reference}")
+    
+    add_end_time = datetime.now()
+    print(f"add time duration: {add_end_time - add_start_time}")
+
+    print(f"query: {query}")
+
+    for model in models:
+        llm = ChatOllama(model=model, temperature=0.2, top_k=30, top_p=0.8)
+    
+        chain = (
+            {"context": temp_retriever, "question": RunnablePassthrough()}
+            | prompt
+            | llm
+            | StrOutputParser()
+        )
+
+        print(f"model: {model}")
+        generation_start_time = datetime.now()
+        print(f"generation started at {generation_start_time}")
+
+        answer = chain.invoke(query)
+
+        generation_end_time = datetime.now()
+        print(f"generation ended at {generation_end_time}")
+        print(f"generation time duration: {generation_end_time - generation_start_time}")
+        print(answer)
+    
+    return None
+
 if __name__ == '__main__':
 
     # content_list = []
@@ -146,9 +205,10 @@ if __name__ == '__main__':
 
     # print(chunk_list)
 
-    query = "쯔쯔가무시증의 발병 시기?"
+    query = "간암의 대표적인 증상?"
     # query = '안면마비의 증상?'
     
-    result = rag_answer(query)
-    print(f"query: {query}")
-    print(f"result: {result}")
+    # result = rag_answer(query)
+    # print(f"query: {query}")
+    # print(f"result: {result}")
+    rag_answer_test(query)

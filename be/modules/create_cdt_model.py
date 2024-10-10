@@ -14,7 +14,7 @@ def load_data_from_directory(data_dir):
         for filename in os.listdir(label_dir):
             if filename.endswith('.png'):
                 img_path = os.path.join(label_dir, filename)
-                img = load_img(img_path, target_size=(100, 100), color_mode='grayscale')
+                img = load_img(img_path, target_size=(400, 400), color_mode='grayscale')
                 img = img_to_array(img) / 255.0  # 정규화
                 images.append(img)
                 labels.append(label)
@@ -30,8 +30,8 @@ def create_cdt_model(data_dir):
     # 데이터를 훈련과 테스트로 분리 (80% 훈련, 20% 테스트)
     x_train, x_test, y_train, y_test = train_test_split(x_data, y_data, test_size=0.2, random_state=1234)
 
-    x_train = x_train.reshape(-1, 100, 100, 1)
-    x_test = x_test.reshape(-1, 100, 100, 1)
+    x_train = x_train.reshape(-1, 400, 400, 1)
+    x_test = x_test.reshape(-1, 400, 400, 1)
 
     y_train = tf.keras.utils.to_categorical(y_train, 6)
     y_test = tf.keras.utils.to_categorical(y_test, 6)
@@ -48,7 +48,7 @@ def create_cdt_model(data_dir):
     )
 
     model = tf.keras.Sequential([
-        tf.keras.layers.Conv2D(kernel_size=(3,3), filters=64, input_shape=(100,100,1), padding='same', activation='relu'),
+        tf.keras.layers.Conv2D(kernel_size=(3,3), filters=64, input_shape=(400,400,1), padding='same', activation='relu'),
         tf.keras.layers.Conv2D(kernel_size=(3,3), filters=64, padding='same', activation='relu'),
         tf.keras.layers.MaxPool2D(pool_size=(2,2)),
     
