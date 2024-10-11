@@ -75,14 +75,14 @@ def clock_drawing_test(img):
             if num >= 1 and num <= 12:
                 numbers.append(num)
                 num_infos.append({'num': num, 'rect': img_sep['rect']})
-        numbers = set(numbers)
-        llm_numbers = cdt_llm_assist.process_image(img_crop)
-        llm_numbers = set(llm_numbers)
+        numbers = list(set(numbers))
+        # llm_numbers = cdt_llm_assist.process_image(img_crop)
+        # llm_numbers = set(llm_numbers)
 
-        diff_numbers = list(llm_numbers - numbers)
-        numbers = list(llm_numbers | numbers)
+        # diff_numbers = list(llm_numbers - numbers)
+        # numbers = list(llm_numbers | numbers)
 
-        print(f"diff_numbers: {diff_numbers}")
+        # print(f"diff_numbers: {diff_numbers}")
 
         positions = 0.0
         x_sorted = sorted(num_infos, key=lambda x:x['rect'][0])

@@ -43,9 +43,10 @@ Let's think step-by-step.
 )
 
 # research_list = rag_prepare.title_lst_from_nia(0)
-# title_list = rag_prepare.title_lst_from_nhis(0)
-# title_list.extend(rag_prepare.title_lst_from_nhis(1))
-title_list = rag_prepare.craw_title_list()
+title_list = []
+for i in range(2):
+    title_list.extend(rag_prepare.title_lst_from_nhis(i))
+# title_list = rag_prepare.craw_title_list()
 
 content_list = []
 for title in title_list:

@@ -64,33 +64,33 @@ class SelectPage extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(
-              height: 40,
-            ),
-            ElevatedButton(
-              style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(
-                  Colors.blueAccent,
-                ),
-                padding: MaterialStateProperty.all(
-                  EdgeInsets.symmetric(
-                    horizontal: 30.0,
-                    vertical: 15.0,
-                  ),
-                ),
-              ),
-              onPressed: () {
-                Navigator.of(context).pushNamed('/example');
-              },
-              child: Text(
-                '테스트',
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.w400,
-                  color: Colors.white,
-                ),
-              ),
-            ),
+            // SizedBox(
+            //   height: 40,
+            // ),
+            // ElevatedButton(
+            //   style: ButtonStyle(
+            //     backgroundColor: MaterialStateProperty.all(
+            //       Colors.blueAccent,
+            //     ),
+            //     padding: MaterialStateProperty.all(
+            //       EdgeInsets.symmetric(
+            //         horizontal: 30.0,
+            //         vertical: 15.0,
+            //       ),
+            //     ),
+            //   ),
+            //   onPressed: () {
+            //     Navigator.of(context).pushNamed('/example');
+            //   },
+            //   child: Text(
+            //     '테스트',
+            //     style: TextStyle(
+            //       fontSize: 20,
+            //       fontWeight: FontWeight.w400,
+            //       color: Colors.white,
+            //     ),
+            //   ),
+            // ),
           ],
         ),
       ),
